@@ -22,22 +22,20 @@
             </Toolbar>
             <Table id="assetTable" items="{assets>/items}" growing="true" growingThreshold="10" noDataText="No matching assets">
                 <columns>
-                    <Column><Text text="Asset Tag" /></Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Asset Name" /></Column>
+                    <Column><Text text="Asset" /></Column>
                     <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Category" /></Column>
-                    <Column><Text text="User" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Assignment" /></Column>
                     <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Location" /></Column>
                     <Column><Text text="Status" /></Column>
                     <Column width="6rem"><Text text="Actions" /></Column>
                 </columns>
                 <items>
-                    <ColumnListItem type="Inactive">
+                    <ColumnListItem type="Navigation" press=".onAssetPress">
                         <cells>
-                            <Link text="{assets>tag}" press=".onAssetPress" />
-                            <Text text="{assets>name}" />
+                            <ObjectIdentifier title="{assets>name}" text="{assets>tag}" icon="sap-icon://laptop" />
                             <Text text="{assets>category}" />
-                            <Text text="{assets>user}" />
-                            <Text text="{assets>location}" />
+                            <ObjectAttribute title="Assigned to" text="{assets>user}" />
+                            <ObjectAttribute title="Location" text="{assets>location}" />
                             <ObjectStatus text="{assets>status}" state="{assets>state}" />
                             <HBox>
                                 <Button icon="sap-icon://edit" type="Transparent" tooltip="Edit asset" press=".onEditAsset" />

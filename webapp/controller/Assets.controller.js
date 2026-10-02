@@ -7,12 +7,19 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/m/Dialog",
     "sap/m/VBox",
+    "sap/m/Title",
+    "sap/m/Text",
+    "sap/m/ObjectIdentifier",
+    "sap/m/ObjectStatus",
     "sap/m/Label",
     "sap/m/Input",
     "sap/m/Select",
     "sap/ui/core/Item",
-    "sap/m/Button"
-], function (Controller, JSONModel, Filter, FilterOperator, MessageToast, MessageBox, Dialog, VBox, Label, Input, Select, Item, Button) {
+    "sap/m/Button",
+    "sap/m/Wizard",
+    "sap/m/WizardStep",
+    "sap/ui/layout/Grid"
+], function (Controller, JSONModel, Filter, FilterOperator, MessageToast, MessageBox, Dialog, VBox, Title, Text, ObjectIdentifier, ObjectStatus, Label, Input, Select, Item, Button, Wizard, WizardStep, Grid) {
     "use strict";
 
     return Controller.extend("itsm.fiori.controller.Assets", {
@@ -42,12 +49,12 @@ sap.ui.define([
         },
         onNewAsset: function () {
             this._editingAssetTag = null;
-            this._openAssetDialog({ tag: this._nextAssetTag(), name: "", category: "Laptop", user: "IT Room", location: "Dammam", status: "Available" });
+            this._openAssetWizard({ tag: this._nextAssetTag(), name: "", category: "Laptop", user: "IT Room", location: "Dammam", status: "Available" });
         },
         onEditAsset: function (oEvent) {
             var oAsset = oEvent.getSource().getBindingContext("assets").getObject();
             this._editingAssetTag = oAsset.tag;
-            this._openAssetDialog(oAsset);
+            this._openAssetEditDialog(oAsset);
         },
         onDeleteAsset: function (oEvent) {
             var oAsset = oEvent.getSource().getBindingContext("assets").getObject();
@@ -62,48 +69,153 @@ sap.ui.define([
                 }
             });
         },
-        _openAssetDialog: function (oAsset) {
-            var that = this;
-            var oStatus = new Select({
-                selectedKey: oAsset.status,
-                items: [new Item({ key: "Available", text: "Available" }), new Item({ key: "Assigned", text: "Assigned" }), new Item({ key: "In Repair", text: "In Repair" })]
+        _createFormField: function (sLabel, oControl) {
+            return new VBox({
+                items: [new Label({ text: sLabel }), oControl],
+                class: "assetFormField"
             });
+        },
+        _createCategorySelect: function (sSelectedKey) {
+            return new Select({
+                selectedKey: sSelectedKey,
+                items: ["Laptop", "Desktop", "Printer", "Monitor", "IP Phone", "Other"].map(function (sCategory) {
+                    return new Item({ key: sCategory, text: sCategory });
+                })
+            });
+        },
+        _createLocationSelect: function (sSelectedKey) {
+            return new Select({
+                selectedKey: sSelectedKey,
+                items: ["Dammam", "Riyadh", "Jeddah"].map(function (sLocation) {
+                    return new Item({ key: sLocation, text: sLocation });
+                })
+            });
+        },
+        _createStatusSelect: function (sSelectedKey) {
+            return new Select({
+                selectedKey: sSelectedKey,
+                items: ["Available", "Assigned", "In Repair"].map(function (sStatus) {
+                    return new Item({ key: sStatus, text: sStatus });
+                })
+            });
+        },
+        _createFormGrid: function (aFields) {
+            return new Grid({
+                defaultSpan: "XL6 L6 M6 S12",
+                hSpacing: 0.5,
+                vSpacing: 0.5,
+                content: aFields
+            });
+        },
+        _openAssetWizard: function (oAsset) {
+            var that = this;
+            this.getView().setModel(new JSONModel(oAsset), "assetDraft");
+            var oTag = new Input({ value: "{assetDraft>/tag}", editable: false });
+            var oName = new Input({ value: "{assetDraft>/name}", placeholder: "Asset name" });
+            var oCategory = this._createCategorySelect("{assetDraft>/category}");
+            var oUser = new Input({ value: "{assetDraft>/user}", placeholder: "Assigned user or IT Room" });
+            var oLocation = this._createLocationSelect("{assetDraft>/location}");
+            var oStatus = this._createStatusSelect("{assetDraft>/status}");
+            var oStepAsset = new WizardStep({
+                title: "Asset Information",
+                validated: true,
+                content: [this._createFormGrid([
+                    this._createFormField("Asset Tag", oTag),
+                    this._createFormField("Asset Name", oName),
+                    this._createFormField("Category", oCategory)
+                ])]
+            });
+            var oStepAssignment = new WizardStep({
+                title: "Assignment",
+                validated: true,
+                content: [this._createFormGrid([
+                    this._createFormField("Assigned To", oUser),
+                    this._createFormField("Location", oLocation),
+                    this._createFormField("Status", oStatus)
+                ])]
+            });
+            var oStepReview = new WizardStep({
+                title: "Review & Save",
+                validated: true,
+                content: [new VBox({
+                    items: [
+                        new Title({ text: "Review & Save", level: "H3" }),
+                        new ObjectIdentifier({ title: "{assetDraft>/name}", text: "{assetDraft>/tag}", icon: "sap-icon://laptop" }),
+                        new Text({ text: "Category: {assetDraft>/category}" }),
+                        new Text({ text: "Assigned To: {assetDraft>/user}" }),
+                        new Text({ text: "Location: {assetDraft>/location}" }),
+                        new ObjectStatus({ text: "{assetDraft>/status}" })
+                    ],
+                    class: "sapUiSmallMargin"
+                })]
+            });
+            this._assetWizard = new Wizard({
+                finishButtonText: "Save",
+                steps: [oStepAsset, oStepAssignment, oStepReview],
+                complete: this.onSaveAsset.bind(this)
+            });
+            this._assetDialog = new Dialog({
+                title: "New Asset",
+                contentWidth: "42rem",
+                stretchOnPhone: true,
+                content: [this._assetWizard],
+                beginButton: new Button({ text: "Cancel", press: this.onCancelAsset.bind(this) })
+            });
+            this.getView().addDependent(this._assetDialog);
+            this._assetDialog.open();
+        },
+        _openAssetEditDialog: function (oAsset) {
+            var that = this;
             this._assetFields = {
                 tag: new Input({ value: oAsset.tag, editable: false }),
                 name: new Input({ value: oAsset.name, placeholder: "Asset name" }),
-                category: new Input({ value: oAsset.category, placeholder: "Category" }),
+                category: this._createCategorySelect(oAsset.category),
                 user: new Input({ value: oAsset.user, placeholder: "Assigned user or IT Room" }),
-                location: new Input({ value: oAsset.location, placeholder: "Location" }),
-                status: oStatus
+                location: this._createLocationSelect(oAsset.location),
+                status: this._createStatusSelect(oAsset.status)
             };
-            var aControls = [];
-            ["tag", "name", "category", "user", "location", "status"].forEach(function (sField) {
-                aControls.push(new Label({ text: sField === "tag" ? "Asset Tag" : sField.charAt(0).toUpperCase() + sField.slice(1) }));
-                aControls.push(that._assetFields[sField]);
-            });
             this._assetDialog = new Dialog({
-                title: this._editingAssetTag ? "Edit Asset" : "New Asset",
-                contentWidth: "28rem",
-                content: [new VBox({ items: aControls, class: "sapUiSmallMargin" })],
-                beginButton: new Button({ text: "Save", type: "Emphasized", press: this.onSaveAsset.bind(this) }),
-                endButton: new Button({ text: "Cancel", press: function () { that._assetDialog.close(); } })
+                title: "Edit Asset",
+                contentWidth: "42rem",
+                stretchOnPhone: true,
+                content: [new VBox({
+                    items: [
+                        new Title({ text: "Asset Information", level: "H3", class: "assetFormSectionTitle" }),
+                        this._createFormGrid([
+                            this._createFormField("Asset Tag", this._assetFields.tag),
+                            this._createFormField("Asset Name", this._assetFields.name),
+                            this._createFormField("Category", this._assetFields.category)
+                        ]),
+                        new Title({ text: "Assignment Details", level: "H3", class: "assetFormSectionTitle" }),
+                        this._createFormGrid([
+                            this._createFormField("Assigned To", this._assetFields.user),
+                            this._createFormField("Location", this._assetFields.location),
+                            this._createFormField("Status", this._assetFields.status)
+                        ])
+                    ],
+                    class: "sapUiSmallMargin"
+                })],
+                beginButton: new Button({ text: "Cancel", press: this.onCancelAsset.bind(this) }),
+                endButton: new Button({ text: "Save", type: "Emphasized", press: this.onSaveAsset.bind(this) })
             });
             this.getView().addDependent(this._assetDialog);
             this._assetDialog.open();
         },
         onSaveAsset: function () {
-            var oFields = this._assetFields;
-            var sName = oFields.name.getValue().trim();
-            var sCategory = oFields.category.getValue().trim();
+            var oFields = this._editingAssetTag ? this._assetFields : null;
+            var oDraft = this._editingAssetTag ? null : this.getView().getModel("assetDraft").getData();
+            var sName = this._editingAssetTag ? oFields.name.getValue().trim() : oDraft.name.trim();
+            var sCategory = this._editingAssetTag ? oFields.category.getSelectedKey() : oDraft.category;
             if (!sName || !sCategory) {
                 MessageToast.show("Enter an asset name and category.");
                 return;
             }
-            var oAsset = {
+            var oAsset = this._editingAssetTag ? {
                 tag: oFields.tag.getValue(), name: sName, category: sCategory,
-                user: oFields.user.getValue().trim() || "IT Room", location: oFields.location.getValue().trim(),
-                status: oFields.status.getSelectedKey(), state: oFields.status.getSelectedKey() === "Available" ? "Success" : "Information"
-            };
+                user: oFields.user.getValue().trim() || "IT Room", location: oFields.location.getSelectedKey(),
+                status: oFields.status.getSelectedKey()
+            } : oDraft;
+            oAsset.state = this._getStatusState(oAsset.status);
             var oModel = this.getView().getModel("assets");
             var aItems = oModel.getProperty("/items").slice();
             var iIndex = aItems.findIndex(function (oItem) { return oItem.tag === this._editingAssetTag; }.bind(this));
@@ -113,10 +225,31 @@ sap.ui.define([
                 oModel.setProperty("/selectedAsset", oAsset);
             }
             this.byId("assetTable").getBinding("items").filter([]);
-            this._assetDialog.close();
-            this._assetDialog.destroy();
-            this._assetDialog = null;
+            this._closeAssetDialog();
             MessageToast.show(iIndex >= 0 ? "Asset updated." : "Asset created.");
+        },
+        onCancelAsset: function () {
+            this._closeAssetDialog();
+        },
+        _closeAssetDialog: function () {
+            var oDialog = this._assetDialog;
+            this._assetDialog = null;
+            this._assetWizard = null;
+            this._assetFields = null;
+            this.getView().setModel(null, "assetDraft");
+            if (oDialog) {
+                oDialog.close();
+                oDialog.destroy();
+            }
+        },
+        _getStatusState: function (sStatus) {
+            if (sStatus === "Available") {
+                return "Success";
+            }
+            if (sStatus === "In Repair") {
+                return "Warning";
+            }
+            return "Information";
         },
         _nextAssetTag: function () {
             var iHighest = this.getView().getModel("assets").getProperty("/items").reduce(function (iMax, oAsset) {

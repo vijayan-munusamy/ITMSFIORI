@@ -18,6 +18,21 @@ sap.ui.define([
                     { id: "INC00003", subject: "VPN Access", priority: "Low", priorityState: "Success", status: "Open", technician: "Sara" }
                 ]
             }), "incidents");
+            this.getView().setModel(new JSONModel({
+                incidentTrend: [
+                    { day: "Mon", incidents: 18 },
+                    { day: "Tue", incidents: 22 },
+                    { day: "Wed", incidents: 16 },
+                    { day: "Thu", incidents: 27 },
+                    { day: "Fri", incidents: 21 },
+                    { day: "Sat", incidents: 12 },
+                    { day: "Sun", incidents: 19 }
+                ],
+                assetUtilization: [
+                    { category: "In Use", assets: 842 },
+                    { category: "In Stock", assets: 126 }
+                ]
+            }), "charts");
         },
         onAfterRendering: function () {
             var that = this;

@@ -19,13 +19,13 @@
             <tnt:SideNavigation id="sideNavigation">
                 <tnt:NavigationList itemSelect=".onNavigationSelect">
                     <tnt:NavigationListItem text="Dashboard" icon="sap-icon://home" key="dashboard" />
-                    <tnt:NavigationListItem text="Service Desk" icon="sap-icon://customer-support" key="serviceDesk">
+                    <tnt:NavigationListItem text="Service Desk (24)" icon="sap-icon://customer-support" key="serviceDesk">
                         <tnt:NavigationListItem text="Incidents" key="incidents" />
                         <tnt:NavigationListItem text="Service Requests" key="serviceRequests" />
                         <tnt:NavigationListItem text="Problems" key="problems" />
                         <tnt:NavigationListItem text="Changes" key="changes" />
                     </tnt:NavigationListItem>
-                    <tnt:NavigationListItem text="Asset Management" icon="sap-icon://laptop" key="assetManagement">
+                    <tnt:NavigationListItem text="Asset Management (842)" icon="sap-icon://laptop" key="assetManagement">
                         <tnt:NavigationListItem text="Asset Register" key="assets" />
                         <tnt:NavigationListItem text="Asset Assignment" key="assetAssignment" />
                         <tnt:NavigationListItem text="Asset Transfer" key="assetTransfer" />
@@ -34,7 +34,7 @@
                         <tnt:NavigationListItem text="Warranty" key="warranty" />
                         <tnt:NavigationListItem text="AMC Contracts" key="amcContracts" />
                     </tnt:NavigationListItem>
-                    <tnt:NavigationListItem text="Inventory" icon="sap-icon://inventory" key="inventory">
+                    <tnt:NavigationListItem text="Inventory (126)" icon="sap-icon://inventory" key="inventory">
                         <tnt:NavigationListItem text="IT Stock" key="itStock" />
                         <tnt:NavigationListItem text="Spare Parts" key="spareParts" />
                         <tnt:NavigationListItem text="Issue / Receipt" key="issueReceipt" />

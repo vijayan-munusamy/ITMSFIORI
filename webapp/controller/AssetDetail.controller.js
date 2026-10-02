@@ -86,7 +86,7 @@ sap.ui.define([
             oAsset.user = oFields.user.getValue().trim();
             oAsset.location = oFields.location.getValue().trim();
             oAsset.status = oFields.status.getSelectedKey();
-            oAsset.state = oAsset.status === "Available" ? "Success" : "Information";
+            oAsset.state = oAsset.status === "Available" ? "Success" : (oAsset.status === "In Repair" ? "Warning" : "Information");
             oModel.setProperty("/selectedAsset", Object.assign({}, oAsset));
             var aItems = oModel.getProperty("/items").slice();
             var iIndex = aItems.findIndex(function (oItem) { return oItem.tag === sTag; });

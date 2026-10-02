@@ -3,22 +3,45 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
-    xmlns:layout="sap.ui.layout">
+    xmlns:layout="sap.ui.layout"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds">
     <Page title="Dashboard" class="itsmDashboardPage">
         <content>
             <VBox class="dashboardContent">
                 <Title text="IT operations overview" level="H2" class="dashboardSectionTitle" />
                 <Text text="Service health and operational workload" class="sapUiTinyMarginBottom" />
+                <layout:Grid defaultSpan="XL3 L3 M6 S6" class="dashboardSummaryStrip sapUiSmallMarginTop">
+                    <VBox class="dashboardSummaryMetric">
+                        <Text text="Total Tickets" class="dashboardSummaryLabel" />
+                        <ObjectNumber number="142" class="dashboardSummaryValue" />
+                    </VBox>
+                    <VBox class="dashboardSummaryMetric">
+                        <Text text="Open Assets" class="dashboardSummaryLabel" />
+                        <ObjectNumber number="968" class="dashboardSummaryValue" />
+                    </VBox>
+                    <VBox class="dashboardSummaryMetric">
+                        <Text text="SLA Compliance" class="dashboardSummaryLabel" />
+                        <ObjectNumber number="94" unit="%" state="Success" class="dashboardSummaryValue" />
+                    </VBox>
+                    <VBox class="dashboardSummaryMetric">
+                        <Text text="Technicians" class="dashboardSummaryLabel" />
+                        <ObjectNumber number="12" class="dashboardSummaryValue" />
+                    </VBox>
+                </layout:Grid>
                 <layout:Grid defaultSpan="XL3 L3 M6 S12" class="dashboardKpiGrid sapUiSmallMarginTop">
                     <Panel id="kpiIncidents" class="kpiCard kpiIncidents">
-                        <VBox class="kpiCardContent sapUiSmallMargin">
+                        <VBox class="kpiCardContent">
                             <VBox class="kpiCardHeader">
                                 <Title text="Open Incidents" level="H4" class="kpiCardTitle" />
                                 <Text text="Awaiting resolution" class="kpiCardSubtitle" />
                             </VBox>
-                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow sapUiSmallMarginTop">
+                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow">
                                 <HBox alignItems="Center">
-                                    <core:Icon src="sap-icon://headset" size="2rem" color="#BB0000" class="kpiIcon" />
+                                    <HBox class="kpiIconCircle kpiIconRed" justifyContent="Center" alignItems="Center">
+                                        <core:Icon src="sap-icon://headset" size="1.5rem" color="#BB0000" />
+                                    </HBox>
                                     <ObjectNumber number="24" state="Error" emphasized="true" class="kpiNumber sapUiTinyMarginBegin" />
                                 </HBox>
                                 <VBox alignItems="End" class="kpiTrendContainer">
@@ -26,25 +49,30 @@
                                     <Text text="vs yesterday" class="kpiTrendSubtext" />
                                 </VBox>
                             </HBox>
-                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter sapUiSmallMarginTop">
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter">
                                 <Text text="Critical 5" class="kpiFooterText kpiCritical" />
                                 <Text text="|" class="kpiFooterDivider" />
                                 <Text text="High 8" class="kpiFooterText kpiHigh" />
                                 <Text text="|" class="kpiFooterDivider" />
                                 <Text text="Med 11" class="kpiFooterText" />
                             </HBox>
+                            <HBox justifyContent="End">
+                                <Link text="View Details →" enabled="false" />
+                            </HBox>
                         </VBox>
                     </Panel>
 
                     <Panel id="kpiRequests" class="kpiCard kpiRequests">
-                        <VBox class="kpiCardContent sapUiSmallMargin">
+                        <VBox class="kpiCardContent">
                             <VBox class="kpiCardHeader">
                                 <Title text="Open Requests" level="H4" class="kpiCardTitle" />
                                 <Text text="Service requests" class="kpiCardSubtitle" />
                             </VBox>
-                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow sapUiSmallMarginTop">
+                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow">
                                 <HBox alignItems="Center">
-                                    <core:Icon src="sap-icon://create" size="2rem" color="#0A6ED1" class="kpiIcon" />
+                                    <HBox class="kpiIconCircle kpiIconBlue" justifyContent="Center" alignItems="Center">
+                                        <core:Icon src="sap-icon://create" size="1.5rem" color="#0A6ED1" />
+                                    </HBox>
                                     <ObjectNumber number="18" state="Information" emphasized="true" class="kpiNumber sapUiTinyMarginBegin" />
                                 </HBox>
                                 <VBox alignItems="End" class="kpiTrendContainer">
@@ -52,25 +80,30 @@
                                     <Text text="vs yesterday" class="kpiTrendSubtext" />
                                 </VBox>
                             </HBox>
-                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter sapUiSmallMarginTop">
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter">
                                 <Text text="Hardware 7" class="kpiFooterText" />
                                 <Text text="|" class="kpiFooterDivider" />
                                 <Text text="Software 6" class="kpiFooterText" />
                                 <Text text="|" class="kpiFooterDivider" />
                                 <Text text="Access 5" class="kpiFooterText" />
                             </HBox>
+                            <HBox justifyContent="End">
+                                <Link text="View Details →" enabled="false" />
+                            </HBox>
                         </VBox>
                     </Panel>
 
                     <Panel id="kpiAssets" class="kpiCard kpiAssets">
-                        <VBox class="kpiCardContent sapUiSmallMargin">
+                        <VBox class="kpiCardContent">
                             <VBox class="kpiCardHeader">
                                 <Title text="Assets in Use" level="H4" class="kpiCardTitle" />
                                 <Text text="Assigned to staff" class="kpiCardSubtitle" />
                             </VBox>
-                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow sapUiSmallMarginTop">
+                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow">
                                 <HBox alignItems="Center">
-                                    <core:Icon src="sap-icon://laptop" size="2rem" color="#107E3E" class="kpiIcon" />
+                                    <HBox class="kpiIconCircle kpiIconGreen" justifyContent="Center" alignItems="Center">
+                                        <core:Icon src="sap-icon://laptop" size="1.5rem" color="#107E3E" />
+                                    </HBox>
                                     <ObjectNumber number="842" state="Success" emphasized="true" class="kpiNumber sapUiTinyMarginBegin" />
                                 </HBox>
                                 <VBox alignItems="End" class="kpiTrendContainer">
@@ -78,25 +111,30 @@
                                     <Text text="vs last month" class="kpiTrendSubtext" />
                                 </VBox>
                             </HBox>
-                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter sapUiSmallMarginTop">
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter">
                                 <Text text="Laptops 540" class="kpiFooterText" />
                                 <Text text="|" class="kpiFooterDivider" />
                                 <Text text="Desktops 210" class="kpiFooterText" />
                                 <Text text="|" class="kpiFooterDivider" />
                                 <Text text="Phones 92" class="kpiFooterText" />
                             </HBox>
+                            <HBox justifyContent="End">
+                                <Link text="View Details →" enabled="false" />
+                            </HBox>
                         </VBox>
                     </Panel>
 
                     <Panel id="kpiStock" class="kpiCard kpiStock">
-                        <VBox class="kpiCardContent sapUiSmallMargin">
+                        <VBox class="kpiCardContent">
                             <VBox class="kpiCardHeader">
                                 <Title text="Assets in Stock" level="H4" class="kpiCardTitle" />
                                 <Text text="Available inventory" class="kpiCardSubtitle" />
                             </VBox>
-                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow sapUiSmallMarginTop">
+                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow">
                                 <HBox alignItems="Center">
-                                    <core:Icon src="sap-icon://inventory" size="2rem" color="#E9730C" class="kpiIcon" />
+                                    <HBox class="kpiIconCircle kpiIconOrange" justifyContent="Center" alignItems="Center">
+                                        <core:Icon src="sap-icon://inventory" size="1.5rem" color="#E9730C" />
+                                    </HBox>
                                     <ObjectNumber number="126" state="Warning" emphasized="true" class="kpiNumber sapUiTinyMarginBegin" />
                                 </HBox>
                                 <VBox alignItems="End" class="kpiTrendContainer">
@@ -104,14 +142,59 @@
                                     <Text text="vs last week" class="kpiTrendSubtext" />
                                 </VBox>
                             </HBox>
-                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter sapUiSmallMarginTop">
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter">
                                 <Text text="Spare Laptops 18" class="kpiFooterText" />
                                 <Text text="|" class="kpiFooterDivider" />
                                 <Text text="Monitors 45" class="kpiFooterText" />
                                 <Text text="|" class="kpiFooterDivider" />
                                 <Text text="Peripherals 63" class="kpiFooterText" />
                             </HBox>
+                            <HBox justifyContent="End">
+                                <Link text="View Details →" enabled="false" />
+                            </HBox>
                         </VBox>
+                    </Panel>
+                </layout:Grid>
+                <layout:Grid defaultSpan="XL6 L6 M12 S12" class="dashboardChartsGrid sapUiSmallMarginTop">
+                    <Panel headerText="Incident Trend (7 Days)" class="dashboardChartPanel">
+                        <content>
+                            <viz:VizFrame id="incidentTrendChart" vizType="line" uiConfig="{applicationSet:'fiori'}" vizProperties="{title:{visible:false},legend:{visible:false}}" height="17rem" width="100%">
+                                <viz:dataset>
+                                    <viz.data:FlattenedDataset data="{charts>/incidentTrend}">
+                                        <viz.data:dimensions>
+                                            <viz.data:DimensionDefinition name="Day" value="{charts>day}" />
+                                        </viz.data:dimensions>
+                                        <viz.data:measures>
+                                            <viz.data:MeasureDefinition name="Incidents" value="{charts>incidents}" />
+                                        </viz.data:measures>
+                                    </viz.data:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Incidents" />
+                                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Day" />
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </content>
+                    </Panel>
+                    <Panel headerText="Asset Utilization" class="dashboardChartPanel">
+                        <content>
+                            <viz:VizFrame id="assetUtilizationChart" vizType="donut" uiConfig="{applicationSet:'fiori'}" vizProperties="{title:{visible:false},legend:{visible:true,position:'bottom'}}" height="17rem" width="100%">
+                                <viz:dataset>
+                                    <viz.data:FlattenedDataset data="{charts>/assetUtilization}">
+                                        <viz.data:dimensions>
+                                            <viz.data:DimensionDefinition name="Category" value="{charts>category}" />
+                                        </viz.data:dimensions>
+                                        <viz.data:measures>
+                                            <viz.data:MeasureDefinition name="Assets" value="{charts>assets}" />
+                                        </viz.data:measures>
+                                    </viz.data:FlattenedDataset>
+                                </viz:dataset>
+                                <viz:feeds>
+                                    <viz.feeds:FeedItem uid="size" type="Measure" values="Assets" />
+                                    <viz.feeds:FeedItem uid="color" type="Dimension" values="Category" />
+                                </viz:feeds>
+                            </viz:VizFrame>
+                        </content>
                     </Panel>
                 </layout:Grid>
                 <Title text="Recent incidents" level="H3" class="dashboardSectionTitle sapUiMediumMarginTop" />

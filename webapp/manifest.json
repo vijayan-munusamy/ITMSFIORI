@@ -23,6 +23,7 @@
         "sap.m": {},
         "sap.ui.core": {},
         "sap.f": {},
+        "sap.viz": {},
         "sap.uxap": {},
         "sap.ui.layout": {},
         "sap.tnt": {}

@@ -8,7 +8,9 @@
 }
 
 .kpiCard {
-    min-height: 160px;
+    height: 180px;
+    min-height: 180px;
+    max-height: 180px;
     background: #ffffff;
     border-radius: 0.5rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
@@ -26,6 +28,7 @@
 .kpiCard.sapMPanel > .sapMPanelContent {
     padding: 0;
     height: 100%;
+    background: transparent;
 }
 
 .kpiCard:hover {
@@ -35,6 +38,7 @@
 }
 
 .kpiIncidents {
+    background: linear-gradient(to bottom, #fff8f8, #ffffff);
     border-top: 5px solid #bb0000;
 }
 
@@ -55,8 +59,9 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    min-height: 136px;
+    min-height: 0;
     box-sizing: border-box;
+    padding: 0.75rem;
 }
 
 .kpiCardHeader {
@@ -80,9 +85,27 @@
     align-items: center;
 }
 
-.kpiIcon {
-    display: inline-flex;
-    align-items: center;
+.kpiIconCircle {
+    width: 3rem;
+    height: 3rem;
+    flex: 0 0 3rem;
+    border-radius: 50%;
+}
+
+.kpiIconRed {
+    background: #fdecec;
+}
+
+.kpiIconBlue {
+    background: #eaf3fc;
+}
+
+.kpiIconGreen {
+    background: #edf7ed;
+}
+
+.kpiIconOrange {
+    background: #fff4e5;
 }
 
 .kpiNumber {
@@ -90,8 +113,8 @@
 }
 
 .kpiNumber .sapMObjectNumberText {
-    font-size: 1.85rem;
-    font-weight: 700;
+    font-size: 2.8rem !important;
+    font-weight: 700 !important;
     line-height: 1.2;
 }
 
@@ -163,6 +186,17 @@
     color: #5b738b;
 }
 
+.assetFormField {
+    box-sizing: border-box;
+    padding: 0.25rem 0.5rem;
+}
+
+.assetFormSectionTitle {
+    margin: 0.75rem 0 0.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--sapGroup_ContentBorderColor);
+}
+
 .itsmDashboardPage {
     background: var(--sapBackgroundColor);
 }
@@ -176,6 +210,51 @@
     margin-top: 0.5rem;
     margin-bottom: 0.75rem;
     color: var(--sapGroup_TitleTextColor);
+}
+
+.dashboardSummaryStrip {
+    border-top: 1px solid var(--sapGroup_ContentBorderColor);
+    border-bottom: 1px solid var(--sapGroup_ContentBorderColor);
+}
+
+.dashboardSummaryMetric {
+    box-sizing: border-box;
+    min-height: 4.25rem;
+    padding: 0.65rem 1rem;
+    border-right: 1px solid var(--sapGroup_ContentBorderColor);
+}
+
+.dashboardSummaryMetric:last-child {
+    border-right: 0;
+}
+
+.dashboardSummaryLabel {
+    color: var(--sapContent_LabelColor);
+    font-size: 0.75rem;
+}
+
+.dashboardSummaryValue .sapMObjectNumberText,
+.dashboardSummaryValue .sapMObjectNumberUnit {
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.dashboardChartPanel {
+    overflow: hidden;
+    border: 1px solid var(--sapGroup_ContentBorderColor);
+    border-radius: 0.5rem;
+    background: var(--sapTile_Background);
+    box-shadow: var(--sapContent_Shadow0);
+}
+
+.dashboardChartPanel .sapMPanelHdr {
+    color: var(--sapGroup_TitleTextColor);
+    background: transparent;
+}
+
+.dashboardChartPanel .sapMPanelContent {
+    padding: 0.5rem 1rem 1rem;
+    background: transparent;
 }
 
 .dashboardCard {
