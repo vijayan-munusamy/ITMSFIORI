@@ -1,0 +1,220 @@
+.sapUiBody {
+    background-color: var(--sapBackgroundColor);
+}
+
+.itsmFcl {
+    height: calc(100vh - 3rem);
+    min-height: 32rem;
+}
+
+.kpiCard {
+    min-height: 160px;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1px solid #e5e7e9;
+    box-sizing: border-box;
+}
+
+.kpiCard.sapMPanel {
+    padding: 0;
+}
+
+.kpiCard.sapMPanel > .sapMPanelContent {
+    padding: 0;
+    height: 100%;
+}
+
+.kpiCard:hover {
+    transform: translateY(-4px);
+    transition: 0.2s;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.kpiIncidents {
+    border-top: 5px solid #bb0000;
+}
+
+.kpiRequests {
+    border-top: 5px solid #0a6ed1;
+}
+
+.kpiAssets {
+    border-top: 5px solid #107e3e;
+}
+
+.kpiStock {
+    border-top: 5px solid #e9730c;
+}
+
+.kpiCardContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 136px;
+    box-sizing: border-box;
+}
+
+.kpiCardHeader {
+    display: flex;
+    flex-direction: column;
+}
+
+.kpiCardTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sapTextColor, #1f2937);
+}
+
+.kpiCardSubtitle {
+    font-size: 0.75rem;
+    color: var(--sapContent_LabelColor, #6b7280);
+    margin-top: 2px;
+}
+
+.kpiMetricRow {
+    align-items: center;
+}
+
+.kpiIcon {
+    display: inline-flex;
+    align-items: center;
+}
+
+.kpiNumber {
+    font-weight: 700;
+}
+
+.kpiNumber .sapMObjectNumberText {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.kpiTrendContainer {
+    align-items: flex-end;
+}
+
+.kpiTrendBadge .sapMObjStatusText {
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.kpiTrendSubtext {
+    font-size: 0.7rem;
+    color: var(--sapContent_LabelColor, #6b7280);
+    margin-top: 1px;
+}
+
+.kpiFooter {
+    border-top: 1px solid #f0f1f3;
+    padding-top: 0.5rem;
+}
+
+.kpiFooterText {
+    font-size: 0.75rem;
+    color: var(--sapContent_LabelColor, #4b5563);
+    font-weight: 500;
+}
+
+.kpiFooterDivider {
+    font-size: 0.75rem;
+    color: #d1d5db;
+    margin: 0 0.25rem;
+}
+
+.kpiCritical {
+    color: #bb0000;
+    font-weight: 600;
+}
+
+.kpiHigh {
+    color: #e9730c;
+    font-weight: 600;
+}
+
+.itsmKpiCard {
+    min-height: 8rem;
+    border-top: 3px solid #0a6ed1;
+}
+
+.itsmKpiCard .sapFCardContent {
+    padding: 0.25rem 1rem 0.75rem;
+}
+
+.itsmReportCard {
+    min-height: 14rem;
+}
+
+.itsmSection {
+    padding: 1rem;
+    margin: 0.5rem;
+    background: #fff;
+    border: 1px solid #e5e7e9;
+    border-radius: 0.25rem;
+}
+
+.itsmSection .sapMLabel {
+    margin-top: 0.75rem;
+    color: #5b738b;
+}
+
+.itsmDashboardPage {
+    background: var(--sapBackgroundColor);
+}
+
+.dashboardContent {
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+.dashboardSectionTitle {
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--sapGroup_TitleTextColor);
+}
+
+.dashboardCard {
+    overflow: hidden;
+    border-radius: 0.5rem;
+    background: var(--sapTile_Background);
+    box-shadow: var(--sapContent_Shadow0);
+}
+
+.dashboardCard.sapMGT:hover {
+    box-shadow: var(--sapContent_Shadow1);
+}
+
+.dashboardFilterBar {
+    gap: 0.5rem;
+    padding: 0.25rem 0 0.75rem;
+}
+
+.dashboardKpiGrid .sapMGT {
+    width: 100%;
+}
+
+@media only screen and (max-width: 1024px) {
+    .dashboardContent {
+        padding: 0.75rem;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .dashboardContent {
+        padding: 0.5rem;
+    }
+
+    .dashboardFilterBar {
+        align-items: stretch;
+    }
+
+    .dashboardFilterBar .sapMSF,
+    .dashboardFilterBar .sapMSlt {
+        max-width: 100%;
+    }
+}

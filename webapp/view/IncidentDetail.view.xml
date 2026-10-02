@@ -1,0 +1,42 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.IncidentDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page title="Incident Details" showNavButton="true" navButtonPress=".onBack" class="sapUiContentPadding">
+        <content>
+            <ObjectHeader title="INC000001" intro="Printer Not Working" number="In Progress" numberState="Information" responsive="true">
+                <attributes>
+                    <ObjectAttribute title="User" text="Vijayan" />
+                    <ObjectAttribute title="Department" text="IT" />
+                    <ObjectAttribute title="Priority" text="High" />
+                    <ObjectAttribute title="Assigned To" text="Umair" />
+                </attributes>
+            </ObjectHeader>
+            <HBox wrap="Wrap" class="sapUiSmallMarginBottom">
+                <VBox class="itsmSection">
+                    <Title text="Timeline" level="H3" />
+                    <List>
+                        <StandardListItem title="Created" description="14 May 2026, 09:12 · Vijayan" icon="sap-icon://add-document" />
+                        <StandardListItem title="Assigned" description="14 May 2026, 09:34 · Umair" icon="sap-icon://employee-approvals" />
+                        <StandardListItem title="Work Started" description="14 May 2026, 10:05 · Umair" icon="sap-icon://begin" />
+                        <StandardListItem title="Resolved" description="Pending" icon="sap-icon://accept" />
+                        <StandardListItem title="Closed" description="Pending" icon="sap-icon://complete" />
+                    </List>
+                </VBox>
+                <VBox class="itsmSection">
+                    <Title text="Attachments" level="H3" />
+                    <Button text="Upload Files" icon="sap-icon://attachment" press=".onUpload" />
+                    <Text text="No files attached" class="sapUiSmallMarginTop" />
+                </VBox>
+            </HBox>
+            <VBox class="itsmSection">
+                <Title text="Comments" level="H3" />
+                <List>
+                    <FeedListItem sender="Vijayan" timestamp="14 May 2026, 09:12" text="The printer is showing a paper jam error, but there is no paper stuck." />
+                    <FeedListItem sender="Umair" timestamp="14 May 2026, 10:08" text="Checking the rollers and printer queue now." />
+                </List>
+                <FeedInput id="commentInput" post=".onCommentPost" placeholder="Add a comment" />
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

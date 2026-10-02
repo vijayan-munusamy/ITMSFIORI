@@ -1,0 +1,65 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt"
+    xmlns:f="sap.f">
+    <tnt:ToolPage id="toolPage">
+        <tnt:header>
+            <tnt:ToolHeader>
+                <Button icon="sap-icon://menu2" type="Transparent" tooltip="Toggle navigation" press=".onToggleSide" />
+                <Title text="IT Service Management" level="H1" />
+                <ToolbarSpacer />
+                <Button icon="sap-icon://bell" type="Transparent" tooltip="Notifications" />
+                <Button icon="sap-icon://person-placeholder" type="Transparent" tooltip="User profile" />
+            </tnt:ToolHeader>
+        </tnt:header>
+        <tnt:sideContent>
+            <tnt:SideNavigation id="sideNavigation">
+                <tnt:NavigationList itemSelect=".onNavigationSelect">
+                    <tnt:NavigationListItem text="Dashboard" icon="sap-icon://home" key="dashboard" />
+                    <tnt:NavigationListItem text="Service Desk" icon="sap-icon://customer-support" key="serviceDesk">
+                        <tnt:NavigationListItem text="Incidents" key="incidents" />
+                        <tnt:NavigationListItem text="Service Requests" key="serviceRequests" />
+                        <tnt:NavigationListItem text="Problems" key="problems" />
+                        <tnt:NavigationListItem text="Changes" key="changes" />
+                    </tnt:NavigationListItem>
+                    <tnt:NavigationListItem text="Asset Management" icon="sap-icon://laptop" key="assetManagement">
+                        <tnt:NavigationListItem text="Asset Register" key="assets" />
+                        <tnt:NavigationListItem text="Asset Assignment" key="assetAssignment" />
+                        <tnt:NavigationListItem text="Asset Transfer" key="assetTransfer" />
+                        <tnt:NavigationListItem text="Asset Return" key="assetReturn" />
+                        <tnt:NavigationListItem text="Asset History" key="assetHistory" />
+                        <tnt:NavigationListItem text="Warranty" key="warranty" />
+                        <tnt:NavigationListItem text="AMC Contracts" key="amcContracts" />
+                    </tnt:NavigationListItem>
+                    <tnt:NavigationListItem text="Inventory" icon="sap-icon://inventory" key="inventory">
+                        <tnt:NavigationListItem text="IT Stock" key="itStock" />
+                        <tnt:NavigationListItem text="Spare Parts" key="spareParts" />
+                        <tnt:NavigationListItem text="Issue / Receipt" key="issueReceipt" />
+                        <tnt:NavigationListItem text="Stock Adjustment" key="stockAdjustment" />
+                    </tnt:NavigationListItem>
+                    <tnt:NavigationListItem text="Users &amp; Employees" icon="sap-icon://employee" key="employees">
+                        <tnt:NavigationListItem text="Employees" key="employeeDirectory" />
+                        <tnt:NavigationListItem text="Departments" key="departments" />
+                        <tnt:NavigationListItem text="Locations" key="locations" />
+                        <tnt:NavigationListItem text="Technicians" key="technicians" />
+                    </tnt:NavigationListItem>
+                    <tnt:NavigationListItem text="SLA &amp; Workflow" icon="sap-icon://workflow-tasks" key="workflow">
+                        <tnt:NavigationListItem text="SLA Policies" key="slaPolicies" />
+                        <tnt:NavigationListItem text="Priority Matrix" key="priorityMatrix" />
+                        <tnt:NavigationListItem text="Escalation Rules" key="escalationRules" />
+                        <tnt:NavigationListItem text="Approvals" key="approvals" />
+                    </tnt:NavigationListItem>
+                    <tnt:NavigationListItem text="Knowledge Base" icon="sap-icon://education" key="knowledgeBase" />
+                    <tnt:NavigationListItem text="Vendors" icon="sap-icon://supplier" key="vendors" />
+                    <tnt:NavigationListItem text="Reports" icon="sap-icon://bar-chart" key="reports" />
+                </tnt:NavigationList>
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+        <tnt:mainContents>
+            <f:FlexibleColumnLayout id="app" layout="OneColumn" class="itsmFcl" />
+        </tnt:mainContents>
+    </tnt:ToolPage>
+</mvc:View>

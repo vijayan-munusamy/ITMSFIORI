@@ -1,0 +1,52 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.Assets"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page title="Asset Register" class="sapUiContentPadding">
+        <headerContent>
+            <Button text="New Asset" icon="sap-icon://add" type="Emphasized" press=".onNewAsset" />
+            <Button text="Upload Excel" icon="sap-icon://upload" press=".onUpload" />
+            <Button text="Export" icon="sap-icon://download" press=".onExport" />
+        </headerContent>
+        <content>
+            <Toolbar>
+                <SearchField width="11rem" placeholder="Search assets" liveChange=".onSearch" />
+                <Select selectedKey="All" change=".onStatusFilter" width="8rem">
+                    <items>
+                        <core:Item key="All" text="All statuses" />
+                        <core:Item key="Assigned" text="Assigned" />
+                        <core:Item key="Available" text="Available" />
+                    </items>
+                </Select>
+            </Toolbar>
+            <Table id="assetTable" items="{assets>/items}" growing="true" growingThreshold="10" noDataText="No matching assets">
+                <columns>
+                    <Column><Text text="Asset Tag" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Asset Name" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Category" /></Column>
+                    <Column><Text text="User" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Location" /></Column>
+                    <Column><Text text="Status" /></Column>
+                    <Column width="6rem"><Text text="Actions" /></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Inactive">
+                        <cells>
+                            <Link text="{assets>tag}" press=".onAssetPress" />
+                            <Text text="{assets>name}" />
+                            <Text text="{assets>category}" />
+                            <Text text="{assets>user}" />
+                            <Text text="{assets>location}" />
+                            <ObjectStatus text="{assets>status}" state="{assets>state}" />
+                            <HBox>
+                                <Button icon="sap-icon://edit" type="Transparent" tooltip="Edit asset" press=".onEditAsset" />
+                                <Button icon="sap-icon://delete" type="Transparent" tooltip="Delete asset" press=".onDeleteAsset" />
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

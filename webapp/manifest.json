@@ -1,0 +1,160 @@
+{
+  "_version": "1.32.0",
+  "sap.app": {
+    "id": "itsm.fiori",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}"
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.108.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.uxap": {},
+        "sap.ui.layout": {},
+        "sap.tnt": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "itsm.fiori.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.f.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "itsm.fiori.view",
+        "controlAggregation": "beginColumnPages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "RouteDashboard",
+          "pattern": ":?query:",
+          "target": [
+            "TargetDashboard"
+          ]
+        },
+        {
+          "name": "RouteAssets",
+          "pattern": "assets",
+          "target": "TargetAssets"
+        },
+        {
+          "name": "RouteEmployees",
+          "pattern": "employees",
+          "target": "TargetEmployees"
+        },
+        {
+          "name": "RouteAssetDetail",
+          "pattern": "assets/{assetId}",
+          "target": "TargetAssetDetail"
+        },
+        {
+          "name": "RouteIncidents",
+          "pattern": "incidents",
+          "target": "TargetIncidents"
+        },
+        {
+          "name": "RouteIncidentDetail",
+          "pattern": "incidents/{incidentId}",
+          "target": "TargetIncidentDetail"
+        },
+        {
+          "name": "RouteReports",
+          "pattern": "reports",
+          "target": "TargetReports"
+        },
+        {
+          "name": "RouteModule",
+          "pattern": "module/{module}",
+          "target": "TargetModule"
+        }
+      ],
+      "targets": {
+        "TargetDashboard": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Dashboard",
+          "viewName": "Dashboard"
+        },
+        "TargetAssets": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "Assets",
+          "viewName": "Assets"
+        },
+        "TargetEmployees": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "Employees",
+          "viewName": "Employees"
+        },
+        "TargetAssetDetail": {
+          "viewType": "XML",
+          "transition": "slide",
+          "controlAggregation": "midColumnPages",
+          "viewId": "AssetDetail",
+          "viewName": "AssetDetail"
+        },
+        "TargetIncidents": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "Incidents",
+          "viewName": "Incidents"
+        },
+        "TargetIncidentDetail": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "IncidentDetail",
+          "viewName": "IncidentDetail"
+        },
+        "TargetReports": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "Reports",
+          "viewName": "Reports"
+        },
+        "TargetModule": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "Module",
+          "viewName": "Module"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "itsm.fiori.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  }
+}

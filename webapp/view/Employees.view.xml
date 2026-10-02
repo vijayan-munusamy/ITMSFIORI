@@ -1,0 +1,44 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.Employees"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page title="Employees" class="sapUiContentPadding">
+        <headerContent>
+            <Button text="New Employee" icon="sap-icon://add" type="Emphasized" press=".onNewEmployee" />
+        </headerContent>
+        <content>
+            <Toolbar>
+                <Title text="Employee Directory" level="H2" />
+                <ToolbarSpacer />
+                <SearchField width="18rem" placeholder="Search employees" liveChange=".onSearch" />
+            </Toolbar>
+            <Table id="employeeTable" items="{employees>/items}" growing="true" growingThreshold="10" noDataText="No matching employees">
+                <columns>
+                    <Column><Text text="Employee ID" /></Column>
+                    <Column><Text text="Employee Name" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Department" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Location" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Email" /></Column>
+                    <Column><Text text="Status" /></Column>
+                    <Column width="6rem"><Text text="Actions" /></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Inactive">
+                        <cells>
+                            <Text text="{employees>id}" />
+                            <Text text="{employees>name}" />
+                            <Text text="{employees>department}" />
+                            <Text text="{employees>location}" />
+                            <Text text="{employees>email}" />
+                            <ObjectStatus text="{employees>status}" state="{employees>state}" />
+                            <HBox>
+                                <Button icon="sap-icon://edit" type="Transparent" tooltip="Edit employee" press=".onEditEmployee" />
+                                <Button icon="sap-icon://delete" type="Transparent" tooltip="Delete employee" press=".onDeleteEmployee" />
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,27 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.Reports"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:cards="sap.f.cards"
+    xmlns:layout="sap.ui.layout">
+    <Page title="Reports &amp; Analytics" class="sapUiContentPadding">
+        <content>
+            <Title text="Operational performance" level="H2" class="sapUiSmallMarginBottom" />
+            <Text text="Current service desk and asset management indicators" />
+            <layout:Grid defaultSpan="XL4 L4 M6 S12" class="sapUiSmallMarginTop">
+                <f:Card class="itsmReportCard"><f:header><cards:Header title="Incident Analysis" subtitle="By priority · this month" /></f:header><f:content><VBox class="sapUiSmallMargin"><ObjectStatus text="Critical  8" state="Error" /><ProgressIndicator percentValue="18" displayValue="18%" state="Error" /><ObjectStatus text="High  16" state="Warning" /><ProgressIndicator percentValue="36" displayValue="36%" state="Warning" /><ObjectStatus text="Medium / Low  20" state="Success" /><ProgressIndicator percentValue="46" displayValue="46%" state="Success" /></VBox></f:content></f:Card>
+                <f:Card class="itsmReportCard"><f:header><cards:Header title="SLA Performance" subtitle="Resolution within target" /></f:header><f:content><VBox class="sapUiSmallMargin"><ObjectNumber number="94.2" unit="%" state="Success" /><ProgressIndicator percentValue="94.2" displayValue="94.2% within SLA" state="Success" /><Text text="3 breached incidents require attention." /></VBox></f:content></f:Card>
+                <f:Card class="itsmReportCard"><f:header><cards:Header title="Asset Utilization" subtitle="Assigned assets" /></f:header><f:content><VBox class="sapUiSmallMargin"><ObjectNumber number="87" unit="%" state="Information" /><ProgressIndicator percentValue="87" displayValue="87% in use" state="Information" /><Text text="126 assets are currently available." /></VBox></f:content></f:Card>
+            </layout:Grid>
+            <Title text="Available reports" level="H3" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+            <List>
+                <StandardListItem title="Warranty Expiry" description="Assets with warranties expiring in the next 90 days" icon="sap-icon://date-time" type="Active" />
+                <StandardListItem title="Technician Performance" description="Resolution volume, response time, and SLA attainment" icon="sap-icon://employee" type="Active" />
+                <StandardListItem title="Department-wise Tickets" description="Incident and request volume by department" icon="sap-icon://org-chart" type="Active" />
+                <StandardListItem title="Vendor Performance" description="Maintenance completion and response metrics" icon="sap-icon://supplier" type="Active" />
+                <StandardListItem title="Inventory Aging" description="Stock age, movement, and replenishment needs" icon="sap-icon://inventory" type="Active" />
+            </List>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,11 @@
+{
+  "name": "itsm-fiori",
+  "version": "1.0.0",
+  "description": "ITSM Fiori Application",
+  "scripts": {
+    "start": "ui5 serve -o index.html"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^3.0.0"
+  }
+}

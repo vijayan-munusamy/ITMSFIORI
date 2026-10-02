@@ -1,0 +1,47 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.Incidents"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page title="Incident Management" class="sapUiContentPadding">
+        <headerContent>
+            <Button text="New Incident" icon="sap-icon://add" type="Emphasized" press=".onNewIncident" />
+            <Button icon="sap-icon://filter" tooltip="Filter incidents" press=".onFilter" />
+        </headerContent>
+        <content>
+            <Toolbar>
+                <Title text="Incidents" level="H2" />
+                <ToolbarSpacer />
+                <SearchField width="18rem" placeholder="Search incidents" liveChange=".onSearch" />
+                <Select selectedKey="All" change=".onStatusFilter" width="11rem">
+                    <items>
+                        <core:Item key="All" text="All statuses" />
+                        <core:Item key="Open" text="Open" />
+                        <core:Item key="In Progress" text="In Progress" />
+                        <core:Item key="Resolved" text="Resolved" />
+                    </items>
+                </Select>
+            </Toolbar>
+            <Table id="incidentTable" items="{incidents>/items}" growing="true" growingThreshold="10" noDataText="No matching incidents">
+                <columns>
+                    <Column><Text text="Ticket No" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Subject" /></Column>
+                    <Column><Text text="Priority" /></Column>
+                    <Column><Text text="Status" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Technician" /></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press=".onIncidentPress">
+                        <cells>
+                            <Text text="{incidents>id}" />
+                            <Text text="{incidents>subject}" />
+                            <ObjectStatus text="{incidents>priority}" state="{incidents>priorityState}" />
+                            <ObjectStatus text="{incidents>status}" state="{incidents>statusState}" />
+                            <Text text="{incidents>technician}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

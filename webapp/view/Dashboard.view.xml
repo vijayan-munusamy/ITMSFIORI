@@ -1,0 +1,151 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout">
+    <Page title="Dashboard" class="itsmDashboardPage">
+        <content>
+            <VBox class="dashboardContent">
+                <Title text="IT operations overview" level="H2" class="dashboardSectionTitle" />
+                <Text text="Service health and operational workload" class="sapUiTinyMarginBottom" />
+                <layout:Grid defaultSpan="XL3 L3 M6 S12" class="dashboardKpiGrid sapUiSmallMarginTop">
+                    <Panel id="kpiIncidents" class="kpiCard kpiIncidents">
+                        <VBox class="kpiCardContent sapUiSmallMargin">
+                            <VBox class="kpiCardHeader">
+                                <Title text="Open Incidents" level="H4" class="kpiCardTitle" />
+                                <Text text="Awaiting resolution" class="kpiCardSubtitle" />
+                            </VBox>
+                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow sapUiSmallMarginTop">
+                                <HBox alignItems="Center">
+                                    <core:Icon src="sap-icon://headset" size="2rem" color="#BB0000" class="kpiIcon" />
+                                    <ObjectNumber number="24" state="Error" emphasized="true" class="kpiNumber sapUiTinyMarginBegin" />
+                                </HBox>
+                                <VBox alignItems="End" class="kpiTrendContainer">
+                                    <ObjectStatus text="↑ 12%" state="Error" class="kpiTrendBadge" />
+                                    <Text text="vs yesterday" class="kpiTrendSubtext" />
+                                </VBox>
+                            </HBox>
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter sapUiSmallMarginTop">
+                                <Text text="Critical 5" class="kpiFooterText kpiCritical" />
+                                <Text text="|" class="kpiFooterDivider" />
+                                <Text text="High 8" class="kpiFooterText kpiHigh" />
+                                <Text text="|" class="kpiFooterDivider" />
+                                <Text text="Med 11" class="kpiFooterText" />
+                            </HBox>
+                        </VBox>
+                    </Panel>
+
+                    <Panel id="kpiRequests" class="kpiCard kpiRequests">
+                        <VBox class="kpiCardContent sapUiSmallMargin">
+                            <VBox class="kpiCardHeader">
+                                <Title text="Open Requests" level="H4" class="kpiCardTitle" />
+                                <Text text="Service requests" class="kpiCardSubtitle" />
+                            </VBox>
+                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow sapUiSmallMarginTop">
+                                <HBox alignItems="Center">
+                                    <core:Icon src="sap-icon://create" size="2rem" color="#0A6ED1" class="kpiIcon" />
+                                    <ObjectNumber number="18" state="Information" emphasized="true" class="kpiNumber sapUiTinyMarginBegin" />
+                                </HBox>
+                                <VBox alignItems="End" class="kpiTrendContainer">
+                                    <ObjectStatus text="↑ 5%" state="Information" class="kpiTrendBadge" />
+                                    <Text text="vs yesterday" class="kpiTrendSubtext" />
+                                </VBox>
+                            </HBox>
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter sapUiSmallMarginTop">
+                                <Text text="Hardware 7" class="kpiFooterText" />
+                                <Text text="|" class="kpiFooterDivider" />
+                                <Text text="Software 6" class="kpiFooterText" />
+                                <Text text="|" class="kpiFooterDivider" />
+                                <Text text="Access 5" class="kpiFooterText" />
+                            </HBox>
+                        </VBox>
+                    </Panel>
+
+                    <Panel id="kpiAssets" class="kpiCard kpiAssets">
+                        <VBox class="kpiCardContent sapUiSmallMargin">
+                            <VBox class="kpiCardHeader">
+                                <Title text="Assets in Use" level="H4" class="kpiCardTitle" />
+                                <Text text="Assigned to staff" class="kpiCardSubtitle" />
+                            </VBox>
+                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow sapUiSmallMarginTop">
+                                <HBox alignItems="Center">
+                                    <core:Icon src="sap-icon://laptop" size="2rem" color="#107E3E" class="kpiIcon" />
+                                    <ObjectNumber number="842" state="Success" emphasized="true" class="kpiNumber sapUiTinyMarginBegin" />
+                                </HBox>
+                                <VBox alignItems="End" class="kpiTrendContainer">
+                                    <ObjectStatus text="↑ 3%" state="Success" class="kpiTrendBadge" />
+                                    <Text text="vs last month" class="kpiTrendSubtext" />
+                                </VBox>
+                            </HBox>
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter sapUiSmallMarginTop">
+                                <Text text="Laptops 540" class="kpiFooterText" />
+                                <Text text="|" class="kpiFooterDivider" />
+                                <Text text="Desktops 210" class="kpiFooterText" />
+                                <Text text="|" class="kpiFooterDivider" />
+                                <Text text="Phones 92" class="kpiFooterText" />
+                            </HBox>
+                        </VBox>
+                    </Panel>
+
+                    <Panel id="kpiStock" class="kpiCard kpiStock">
+                        <VBox class="kpiCardContent sapUiSmallMargin">
+                            <VBox class="kpiCardHeader">
+                                <Title text="Assets in Stock" level="H4" class="kpiCardTitle" />
+                                <Text text="Available inventory" class="kpiCardSubtitle" />
+                            </VBox>
+                            <HBox alignItems="Center" justifyContent="SpaceBetween" class="kpiMetricRow sapUiSmallMarginTop">
+                                <HBox alignItems="Center">
+                                    <core:Icon src="sap-icon://inventory" size="2rem" color="#E9730C" class="kpiIcon" />
+                                    <ObjectNumber number="126" state="Warning" emphasized="true" class="kpiNumber sapUiTinyMarginBegin" />
+                                </HBox>
+                                <VBox alignItems="End" class="kpiTrendContainer">
+                                    <ObjectStatus text="↓ 4%" state="Warning" class="kpiTrendBadge" />
+                                    <Text text="vs last week" class="kpiTrendSubtext" />
+                                </VBox>
+                            </HBox>
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="kpiFooter sapUiSmallMarginTop">
+                                <Text text="Spare Laptops 18" class="kpiFooterText" />
+                                <Text text="|" class="kpiFooterDivider" />
+                                <Text text="Monitors 45" class="kpiFooterText" />
+                                <Text text="|" class="kpiFooterDivider" />
+                                <Text text="Peripherals 63" class="kpiFooterText" />
+                            </HBox>
+                        </VBox>
+                    </Panel>
+                </layout:Grid>
+                <Title text="Recent incidents" level="H3" class="dashboardSectionTitle sapUiMediumMarginTop" />
+                <HBox class="dashboardFilterBar" wrap="Wrap" alignItems="Center">
+                    <SearchField width="16rem" placeholder="Search incidents" liveChange=".onIncidentSearch" />
+                    <Select selectedKey="All" width="10rem" tooltip="Filter by priority" change=".onPriorityFilter">
+                        <core:Item key="All" text="All priorities" />
+                        <core:Item key="Critical" text="Critical" />
+                        <core:Item key="High" text="High" />
+                        <core:Item key="Medium" text="Medium" />
+                        <core:Item key="Low" text="Low" />
+                    </Select>
+                    <Select selectedKey="All" width="10rem" tooltip="Filter by status" change=".onStatusFilter">
+                        <core:Item key="All" text="All statuses" />
+                        <core:Item key="Open" text="Open" />
+                        <core:Item key="In Progress" text="In Progress" />
+                        <core:Item key="Resolved" text="Resolved" />
+                    </Select>
+                </HBox>
+                <Table id="recentIncidentTable" class="dashboardCard" items="{incidents>/items}" growing="true" growingThreshold="5">
+                    <columns>
+                        <Column><Text text="Ticket No" /></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Subject" /></Column>
+                        <Column><Text text="Priority" /></Column>
+                        <Column><Text text="Status" /></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Technician" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells><Link text="{incidents>id}" press=".onIncidentPress" /><Text text="{incidents>subject}" /><ObjectStatus text="{incidents>priority}" state="{incidents>priorityState}" /><Text text="{incidents>status}" /><Text text="{incidents>technician}" /></cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

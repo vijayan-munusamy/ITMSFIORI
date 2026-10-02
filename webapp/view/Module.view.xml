@@ -1,0 +1,16 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.Module"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="modulePage" title="{module>/title}" class="sapUiContentPadding">
+        <content>
+            <VBox>
+                <Title text="{module>/title}" level="H2" class="sapUiSmallMarginBottom" />
+                <Text text="Manage {module>/title} records and related workflows." />
+                <List items="{module>/items}" class="sapUiSmallMarginTop">
+                    <StandardListItem title="{module>title}" description="{module>description}" icon="{module>icon}" type="Active" />
+                </List>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

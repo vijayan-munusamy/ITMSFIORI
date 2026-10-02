@@ -1,0 +1,70 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.AssetDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:uxap="sap.uxap"
+    xmlns:form="sap.ui.layout.form">
+    <uxap:ObjectPageLayout id="assetObjectPage" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading><m:Title text="{assets>/selectedAsset/name}" wrapping="true" /></uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <m:FlexBox wrap="NoWrap" fitContainer="true" alignItems="Center">
+                        <m:Title text="{assets>/selectedAsset/name}" wrapping="true" />
+                        <m:ObjectStatus text="{assets>/selectedAsset/tag}" class="sapUiSmallMarginBegin" />
+                    </m:FlexBox>
+                </uxap:snappedHeading>
+                <uxap:navigationActions>
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://full-screen" press=".onFullScreen" tooltip="Full screen" visible="{= !${fclState>/isFullScreen} }" />
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://exit-full-screen" press=".onExitFullScreen" tooltip="Exit full screen" visible="{fclState>/isFullScreen}" />
+                    <m:OverflowToolbarButton type="Transparent" icon="sap-icon://decline" press=".onCloseColumn" tooltip="Close details" />
+                </uxap:navigationActions>
+                <uxap:actions>
+                    <m:Button text="Edit" type="Emphasized" press=".onEditAsset" />
+                    <m:Button text="Delete" type="Transparent" press=".onDeleteAsset" />
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+        <uxap:headerContent>
+            <m:FlexBox wrap="Wrap" fitContainer="true" alignItems="Stretch">
+                <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd"><m:Label text="Asset Tag" /><m:Text text="{assets>/selectedAsset/tag}" /></m:VBox>
+                <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd"><m:Label text="Category" /><m:Text text="{assets>/selectedAsset/category}" /></m:VBox>
+                <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd"><m:Label text="Assigned To" /><m:Text text="{assets>/selectedAsset/user}" /></m:VBox>
+                <m:VBox justifyContent="Center" class="sapUiSmallMarginEnd"><m:Label text="Location" /><m:Text text="{assets>/selectedAsset/location}" /></m:VBox>
+                <m:ObjectStatus text="{assets>/selectedAsset/status}" state="{assets>/selectedAsset/state}" class="sapUiSmallMarginBegin" />
+            </m:FlexBox>
+        </uxap:headerContent>
+        <uxap:sections>
+            <uxap:ObjectPageSection title="General Information">
+                <uxap:subSections><uxap:ObjectPageSubSection>
+                    <uxap:blocks>
+                        <form:SimpleForm editable="false" layout="ResponsiveGridLayout" maxContainerCols="2" labelSpanL="4" labelSpanM="4" columnsL="2" columnsM="2">
+                            <form:content>
+                                <m:Label text="Asset Tag" /><m:Text text="{assets>/selectedAsset/tag}" />
+                                <m:Label text="Serial Number" /><m:Text text="{assets>/selectedAsset/serialNumber}" />
+                                <m:Label text="Purchase Date" /><m:Text text="{assets>/selectedAsset/purchaseDate}" />
+                                <m:Label text="Warranty Expiry" /><m:ObjectStatus text="{assets>/selectedAsset/warrantyExpiry}" state="Success" />
+                            </form:content>
+                        </form:SimpleForm>
+                    </uxap:blocks>
+                </uxap:ObjectPageSubSection></uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="Assignment History">
+                <uxap:subSections><uxap:ObjectPageSubSection><uxap:blocks>
+                    <m:Table items="{assets>/selectedAsset/assignmentHistory}" noDataText="No assignment history">
+                        <m:columns><m:Column><m:Text text="Date" /></m:Column><m:Column><m:Text text="Employee" /></m:Column><m:Column><m:Text text="Action" /></m:Column></m:columns>
+                        <m:items><m:ColumnListItem><m:cells><m:Text text="{assets>date}" /><m:Text text="{assets>employee}" /><m:Text text="{assets>action}" /></m:cells></m:ColumnListItem></m:items>
+                    </m:Table>
+                </uxap:blocks></uxap:ObjectPageSubSection></uxap:subSections>
+            </uxap:ObjectPageSection>
+            <uxap:ObjectPageSection title="Maintenance History">
+                <uxap:subSections><uxap:ObjectPageSubSection><uxap:blocks>
+                    <m:Table items="{assets>/selectedAsset/maintenanceHistory}" noDataText="No maintenance history">
+                        <m:columns><m:Column><m:Text text="Date" /></m:Column><m:Column><m:Text text="Vendor" /></m:Column><m:Column><m:Text text="Remarks" /></m:Column></m:columns>
+                        <m:items><m:ColumnListItem><m:cells><m:Text text="{assets>date}" /><m:Text text="{assets>vendor}" /><m:Text text="{assets>remarks}" /></m:cells></m:ColumnListItem></m:items>
+                    </m:Table>
+                </uxap:blocks></uxap:ObjectPageSubSection></uxap:subSections>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+    </uxap:ObjectPageLayout>
+</mvc:View>
