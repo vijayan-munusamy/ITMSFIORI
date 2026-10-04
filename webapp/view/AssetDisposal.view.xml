@@ -1,0 +1,72 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.AssetDisposal"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page title="Asset Disposal" class="sapUiContentPadding">
+        <content>
+            <VBox class="sapUiSmallMarginBottom">
+                <Title text="Disposal Workflow" level="H2" />
+                <Text text="Actor: Asset Manager | Request → Approval → Dispose | Disposed assets are locked and cannot be assigned" class="sapUiTinyMarginTop" />
+            </VBox>
+
+            <Table id="disposalAssetTable" items="{disposal>/assets}" noDataText="No AVAILABLE, UNDER_REPAIR, or LOST assets are eligible for disposal" class="sapUiSmallMarginTop">
+                <columns>
+                    <Column><Text text="Asset" /></Column>
+                    <Column><Text text="Current Status" /></Column>
+                    <Column><Text text="Location" /></Column>
+                    <Column><Text text="Request Status" /></Column>
+                    <Column width="9rem"><Text text="Action" /></Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier title="{disposal>name}" text="{disposal>tag}" />
+                            <ObjectStatus text="{disposal>status}" state="{disposal>state}" />
+                            <Text text="{disposal>location}" />
+                            <Text text="{disposal>disposalRequest/status}" />
+                            <Button text="Select" press=".onSelectAsset" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+            <VBox class="sapUiLargeMarginTop" visible="{= !!${disposal>/selectedAsset} }">
+                <Title text="Create Disposal Request" level="H3" />
+                <ObjectIdentifier title="{disposal>/selectedAsset/name}" text="{disposal>/selectedAsset/tag}" />
+                <Text text="Current status: {disposal>/selectedAsset/status}" class="sapUiTinyMarginTop" />
+
+                <Label text="Reason" class="sapUiMediumMarginTop" />
+                <Select id="disposalReasonSelect" selectedKey="{disposal>/request/reason}" width="22rem">
+                    <items>
+                        <core:Item key="Obsolete" text="Obsolete" />
+                        <core:Item key="Broken" text="Broken" />
+                        <core:Item key="Beyond Repair" text="Beyond Repair" />
+                        <core:Item key="Warranty Expired" text="Warranty Expired" />
+                    </items>
+                </Select>
+
+                <Label text="Remarks" class="sapUiMediumMarginTop" />
+                <TextArea value="{disposal>/request/remarks}" width="30rem" rows="3" placeholder="Add disposal details" />
+                <Button text="Create Disposal Request" type="Emphasized" press=".onCreateDisposalRequest" class="sapUiSmallMarginTop" visible="{= ${disposal>/request/status} === 'Not Requested' || ${disposal>/request/status} === 'Rejected' }" />
+
+                <Title text="Approval" level="H3" class="sapUiLargeMarginTop" />
+                <Label text="Decision" class="sapUiMediumMarginTop" />
+                <Select id="disposalApprovalSelect" selectedKey="Approved" width="22rem">
+                    <items>
+                        <core:Item key="Approved" text="Approved" />
+                        <core:Item key="Rejected" text="Rejected" />
+                    </items>
+                </Select>
+                <Button text="Record Approval" press=".onRecordApproval" class="sapUiSmallMarginTop" visible="{= ${disposal>/request/status} === 'Awaiting Approval' }" />
+                <HBox alignItems="Center" class="sapUiSmallMarginTop">
+                    <Label text="Request Status:" class="sapUiTinyMarginEnd" />
+                    <ObjectStatus text="{disposal>/request/status}" state="{= ${disposal>/request/status} === 'Approved' ? 'Success' : (${disposal>/request/status} === 'Rejected' ? 'Error' : 'Warning') }" />
+                </HBox>
+
+                <Title text="Dispose Asset" level="H3" class="sapUiLargeMarginTop" />
+                <Button text="Confirm Disposal" type="Reject" press=".onDisposeAsset" enabled="{= ${disposal>/request/status} === 'Approved' }" class="sapUiSmallMarginTop" />
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

@@ -1,0 +1,89 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.AssetAssignment"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page title="Asset Assignment" class="sapUiContentPadding">
+        <headerContent>
+            <Button text="Submit Assignment" type="Emphasized" icon="sap-icon://accept" press=".onSubmitAssignment" />
+        </headerContent>
+        <content>
+            <VBox class="sapUiSmallMarginBottom">
+                <Title text="Asset Assignment Workflow" level="H2" />
+                <Text text="Actor: Asset Manager | Preconditions: Asset Status = AVAILABLE and Employee = ACTIVE" class="sapUiTinyMarginTop" />
+            </VBox>
+
+            <Wizard id="assignmentWizard" finishButtonText="Submit" complete=".onSubmitAssignment">
+                <WizardStep id="stepAsset" title="Search Asset" validated="true">
+                    <VBox>
+                        <SearchField id="assetSearch" width="22rem" placeholder="Search available assets" liveChange=".onAssetSearch" />
+                        <MessageStrip text="{= 'Selected Asset: ' + ${assignment>/selectedAsset/name} + ' (' + ${assignment>/selectedAsset/tag} + ')' }" type="Success" showIcon="true" visible="{= !!${assignment>/selectedAsset} }" class="sapUiTinyMarginTop" />
+                        <Table id="availableAssetTable" items="{assignment>/availableAssets}" noDataText="No available assets found" class="sapUiSmallMarginTop">
+                            <columns>
+                                <Column><Text text="Asset" /></Column>
+                                <Column><Text text="Category" /></Column>
+                                <Column><Text text="Location" /></Column>
+                                <Column><Text text="Status" /></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem type="Navigation" press=".onSelectAsset">
+                                    <cells>
+                                        <ObjectIdentifier title="{assignment>name}" text="{assignment>tag}" />
+                                        <Text text="{assignment>category}" />
+                                        <Text text="{assignment>location}" />
+                                        <ObjectStatus text="{assignment>status}" state="Success" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </VBox>
+                </WizardStep>
+
+                <WizardStep id="stepEmployee" title="Select Employee" validated="true">
+                    <VBox>
+                        <SearchField id="employeeSearch" width="22rem" placeholder="Search active employees" liveChange=".onEmployeeSearch" />
+                        <MessageStrip text="{= 'Selected Employee: ' + ${assignment>/selectedEmployee/name} + ' (' + ${assignment>/selectedEmployee/id} + ')' }" type="Success" showIcon="true" visible="{= !!${assignment>/selectedEmployee} }" class="sapUiTinyMarginTop" />
+                        <Table id="assignmentEmployeeTable" items="{assignment>/activeEmployees}" noDataText="No active employees found" class="sapUiSmallMarginTop">
+                            <columns>
+                                <Column><Text text="Employee ID" /></Column>
+                                <Column><Text text="Employee Name" /></Column>
+                                <Column><Text text="Department" /></Column>
+                                <Column><Text text="Location" /></Column>
+                                <Column><Text text="Status" /></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem type="Navigation" press=".onSelectEmployee">
+                                    <cells>
+                                        <Text text="{assignment>id}" />
+                                        <Text text="{assignment>name}" />
+                                        <Text text="{assignment>department}" />
+                                        <Text text="{assignment>location}" />
+                                        <ObjectStatus text="{assignment>status}" state="Success" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </VBox>
+                </WizardStep>
+
+                <WizardStep id="stepReview" title="Review Details" validated="true">
+                    <VBox class="sapUiSmallMarginTop">
+                        <Title text="Review Assignment" level="H3" />
+                        <ObjectStatus text="Selected Asset" state="Information" class="sapUiTinyMarginBottom" />
+                        <ObjectIdentifier title="{assignment>/selectedAsset/name}" text="{assignment>/selectedAsset/tag}" />
+                        <Text text="Category: {assignment>/selectedAsset/category}" />
+                        <Text text="Location: {assignment>/selectedAsset/location}" />
+                        <Text text="Current Status: {assignment>/selectedAsset/status}" />
+                        <Text text="System: Create Assignment Record, Create Lifecycle Event, Update Asset Status to ASSIGNED, Notification sent to employee, Pending Acknowledgement" class="sapUiSmallMarginTop" />
+
+                        <ObjectStatus text="Selected Employee" state="Information" class="sapUiMediumMarginTop sapUiTinyMarginBottom" />
+                        <ObjectIdentifier title="{assignment>/selectedEmployee/name}" text="{assignment>/selectedEmployee/id}" />
+                        <Text text="Department: {assignment>/selectedEmployee/department}" />
+                        <Text text="Location: {assignment>/selectedEmployee/location}" />
+                        <Text text="Status: {assignment>/selectedEmployee/status}" />
+                    </VBox>
+                </WizardStep>
+            </Wizard>
+        </content>
+    </Page>
+</mvc:View>

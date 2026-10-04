@@ -12,11 +12,14 @@
         <content>
             <Toolbar>
                 <SearchField width="11rem" placeholder="Search assets" liveChange=".onSearch" />
-                <Select selectedKey="All" change=".onStatusFilter" width="8rem">
+                <Select selectedKey="All" change=".onStatusFilter" width="10rem">
                     <items>
                         <core:Item key="All" text="All statuses" />
-                        <core:Item key="Assigned" text="Assigned" />
                         <core:Item key="Available" text="Available" />
+                        <core:Item key="Assigned" text="Assigned" />
+                        <core:Item key="Under_Repair" text="Under Repair" />
+                        <core:Item key="Lost" text="Lost" />
+                        <core:Item key="Disposed" text="Disposed" />
                     </items>
                 </Select>
             </Toolbar>

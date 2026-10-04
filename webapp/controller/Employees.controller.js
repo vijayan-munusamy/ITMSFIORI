@@ -17,14 +17,16 @@ sap.ui.define([
 
     return Controller.extend("itsm.fiori.controller.Employees", {
         onInit: function () {
-            this.getView().setModel(new JSONModel({
-                items: [
-                    { id: "EMP0001", name: "Ahmed Al-Salem", department: "IT", location: "Dammam", email: "ahmed.alsalem@example.com", status: "Active", state: "Success" },
-                    { id: "EMP0002", name: "Vijayan Kumar", department: "IT", location: "Riyadh", email: "vijayan.kumar@example.com", status: "Active", state: "Success" },
-                    { id: "EMP0003", name: "Sara Hassan", department: "Finance", location: "Jeddah", email: "sara.hassan@example.com", status: "Active", state: "Success" },
-                    { id: "EMP0004", name: "Ali Mansour", department: "Operations", location: "Dammam", email: "ali.mansour@example.com", status: "Inactive", state: "None" }
-                ]
-            }), "employees");
+            if (!this.getOwnerComponent().getModel("employees")) {
+                this.getOwnerComponent().setModel(new JSONModel({
+                    items: [
+                        { id: "EMP0001", name: "Ahmed Al-Salem", department: "IT", location: "Dammam", email: "ahmed.alsalem@example.com", status: "Active", state: "Success" },
+                        { id: "EMP0002", name: "Vijayan Kumar", department: "IT", location: "Riyadh", email: "vijayan.kumar@example.com", status: "Active", state: "Success" },
+                        { id: "EMP0003", name: "Sara Hassan", department: "Finance", location: "Jeddah", email: "sara.hassan@example.com", status: "Active", state: "Success" },
+                        { id: "EMP0004", name: "Ali Mansour", department: "Operations", location: "Dammam", email: "ali.mansour@example.com", status: "Inactive", state: "None" }
+                    ]
+                }), "employees");
+            }
         },
         onSearch: function (oEvent) {
             var sQuery = oEvent.getParameter("newValue");

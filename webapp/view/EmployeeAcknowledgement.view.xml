@@ -1,0 +1,40 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.EmployeeAcknowledgement"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page title="Employee Acknowledgement" class="sapUiContentPadding">
+        <content>
+            <VBox class="sapUiSmallMarginBottom">
+                <Title text="Assigned Asset Acknowledgement" level="H2" />
+                <Text text="Actor: Employee | Process: Open Assigned Asset, Review Asset, Accept or Reject" class="sapUiTinyMarginTop" />
+            </VBox>
+
+            <Table id="ackAssetTable" items="{acknowledgement>/assignedAssets}" noDataText="No assigned assets available for acknowledgement" class="sapUiSmallMarginTop">
+                <columns>
+                    <Column><Text text="Asset" /></Column>
+                    <Column><Text text="Category" /></Column>
+                    <Column><Text text="Assigned To" /></Column>
+                    <Column><Text text="Status" /></Column>
+                    <Column width="12rem"><Text text="Action" /></Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier title="{acknowledgement>name}" text="{acknowledgement>tag}" />
+                            <Text text="{acknowledgement>category}" />
+                            <Text text="{acknowledgement>user}" />
+                            <ObjectStatus text="{acknowledgement>acknowledgementStatus}" state="{= ${acknowledgement>acknowledgementStatus} === 'Acknowledged' ? 'Success' : (${acknowledgement>acknowledgementStatus} === 'Rejected' ? 'Error' : 'Warning') }" />
+                            <HBox>
+                                <Button text="Accept" type="Accept" press=".onAcceptAsset" visible="{= ${acknowledgement>acknowledgementStatus} === 'Pending Acknowledgement' }" />
+                                <Button text="Reject" type="Reject" press=".onRejectAsset" visible="{= ${acknowledgement>acknowledgementStatus} === 'Pending Acknowledgement' }" class="sapUiTinyMarginBegin" />
+                                <ObjectStatus text="Completed" state="Success" visible="{= ${acknowledgement>acknowledgementStatus} === 'Acknowledged' }" />
+                                <ObjectStatus text="Rejected" state="Error" visible="{= ${acknowledgement>acknowledgementStatus} === 'Rejected' }" />
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+    </Page>
+</mvc:View>

@@ -49,7 +49,28 @@ sap.ui.define([
         },
         onNewAsset: function () {
             this._editingAssetTag = null;
-            this._openAssetWizard({ tag: this._nextAssetTag(), name: "", category: "Laptop", user: "IT Room", location: "Dammam", status: "Available" });
+            var oAsset = {
+                tag: this._nextAssetTag(),
+                name: "",
+                category: "Laptop",
+                assetType: "Laptop",
+                user: "IT Room",
+                location: "Dammam",
+                department: "IT",
+                status: "Available",
+                serialNumber: "",
+                vendor: "",
+                purchaseDate: "",
+                cost: "",
+                warranty: "",
+                attachments: "",
+                assetUuid: this._generateAssetUuid(),
+                assetCode: "AST-" + this._nextAssetTag().replace("AST", ""),
+                qrCode: "QR-" + this._nextAssetTag(),
+                auditRecord: "Audit record created on " + new Date().toLocaleDateString("en-GB"),
+                lifecycleRecord: "Lifecycle record created; status set to AVAILABLE"
+            };
+            this._openAssetWizard(oAsset);
         },
         onEditAsset: function (oEvent) {
             var oAsset = oEvent.getSource().getBindingContext("assets").getObject();
@@ -68,6 +89,9 @@ sap.ui.define([
                     }
                 }
             });
+        },
+        _generateAssetUuid: function () {
+            return "ASSET-" + Math.random().toString(36).slice(2, 8).toUpperCase();
         },
         _createFormField: function (sLabel, oControl) {
             return new VBox({
@@ -92,10 +116,17 @@ sap.ui.define([
             });
         },
         _createStatusSelect: function (sSelectedKey) {
+            var aStatuses = [
+                { key: "Available", text: "Available" },
+                { key: "Assigned", text: "Assigned" },
+                { key: "Under_Repair", text: "Under Repair" },
+                { key: "Lost", text: "Lost" },
+                { key: "Disposed", text: "Disposed" }
+            ];
             return new Select({
-                selectedKey: sSelectedKey,
-                items: ["Available", "Assigned", "In Repair"].map(function (sStatus) {
-                    return new Item({ key: sStatus, text: sStatus });
+                selectedKey: sSelectedKey === "In Repair" ? "Under_Repair" : sSelectedKey,
+                items: aStatuses.map(function (oStatus) {
+                    return new Item({ key: oStatus.key, text: oStatus.text });
                 })
             });
         },
@@ -113,8 +144,16 @@ sap.ui.define([
             var oTag = new Input({ value: "{assetDraft>/tag}", editable: false });
             var oName = new Input({ value: "{assetDraft>/name}", placeholder: "Asset name" });
             var oCategory = this._createCategorySelect("{assetDraft>/category}");
+            var oAssetType = new Input({ value: "{assetDraft>/assetType}", placeholder: "Asset Type" });
+            var oSerialNumber = new Input({ value: "{assetDraft>/serialNumber}", placeholder: "Serial Number" });
+            var oVendor = new Input({ value: "{assetDraft>/vendor}", placeholder: "Vendor" });
+            var oPurchaseDate = new Input({ value: "{assetDraft>/purchaseDate}", placeholder: "Purchase Date" });
+            var oCost = new Input({ value: "{assetDraft>/cost}", placeholder: "Cost" });
             var oUser = new Input({ value: "{assetDraft>/user}", placeholder: "Assigned user or IT Room" });
             var oLocation = this._createLocationSelect("{assetDraft>/location}");
+            var oDepartment = new Input({ value: "{assetDraft>/department}", placeholder: "Department" });
+            var oWarranty = new Input({ value: "{assetDraft>/warranty}", placeholder: "Warranty" });
+            var oAttachments = new Input({ value: "{assetDraft>/attachments}", placeholder: "Attachment reference" });
             var oStatus = this._createStatusSelect("{assetDraft>/status}");
             var oStepAsset = new WizardStep({
                 title: "Asset Information",
@@ -122,15 +161,23 @@ sap.ui.define([
                 content: [this._createFormGrid([
                     this._createFormField("Asset Tag", oTag),
                     this._createFormField("Asset Name", oName),
-                    this._createFormField("Category", oCategory)
+                    this._createFormField("Asset Category", oCategory),
+                    this._createFormField("Asset Type", oAssetType),
+                    this._createFormField("Serial Number", oSerialNumber),
+                    this._createFormField("Vendor", oVendor),
+                    this._createFormField("Purchase Date", oPurchaseDate),
+                    this._createFormField("Cost", oCost)
                 ])]
             });
             var oStepAssignment = new WizardStep({
-                title: "Assignment",
+                title: "Assignment & Lifecycle",
                 validated: true,
                 content: [this._createFormGrid([
                     this._createFormField("Assigned To", oUser),
                     this._createFormField("Location", oLocation),
+                    this._createFormField("Department", oDepartment),
+                    this._createFormField("Warranty", oWarranty),
+                    this._createFormField("Attachments", oAttachments),
                     this._createFormField("Status", oStatus)
                 ])]
             });
@@ -141,10 +188,19 @@ sap.ui.define([
                     items: [
                         new Title({ text: "Review & Save", level: "H3" }),
                         new ObjectIdentifier({ title: "{assetDraft>/name}", text: "{assetDraft>/tag}", icon: "sap-icon://laptop" }),
-                        new Text({ text: "Category: {assetDraft>/category}" }),
+                        new Text({ text: "Asset Category: {assetDraft>/category}" }),
+                        new Text({ text: "Asset Type: {assetDraft>/assetType}" }),
+                        new Text({ text: "Serial Number: {assetDraft>/serialNumber}" }),
+                        new Text({ text: "Vendor: {assetDraft>/vendor}" }),
+                        new Text({ text: "Purchase Date: {assetDraft>/purchaseDate}" }),
+                        new Text({ text: "Cost: {assetDraft>/cost}" }),
                         new Text({ text: "Assigned To: {assetDraft>/user}" }),
                         new Text({ text: "Location: {assetDraft>/location}" }),
-                        new ObjectStatus({ text: "{assetDraft>/status}" })
+                        new Text({ text: "Department: {assetDraft>/department}" }),
+                        new Text({ text: "Warranty: {assetDraft>/warranty}" }),
+                        new Text({ text: "System Processing: Asset UUID {assetDraft>/assetUuid}; Asset Code {assetDraft>/assetCode}; QR Code {assetDraft>/qrCode}" }),
+                        new Text({ text: "Audit Record: {assetDraft>/auditRecord}" }),
+                        new ObjectStatus({ text: "Final Status: {assetDraft>/status}" })
                     ],
                     class: "sapUiSmallMargin"
                 })]
@@ -155,8 +211,8 @@ sap.ui.define([
                 complete: this.onSaveAsset.bind(this)
             });
             this._assetDialog = new Dialog({
-                title: "New Asset",
-                contentWidth: "42rem",
+                title: "Create Asset",
+                contentWidth: "52rem",
                 stretchOnPhone: true,
                 content: [this._assetWizard],
                 beginButton: new Button({ text: "Cancel", press: this.onCancelAsset.bind(this) })
@@ -170,13 +226,21 @@ sap.ui.define([
                 tag: new Input({ value: oAsset.tag, editable: false }),
                 name: new Input({ value: oAsset.name, placeholder: "Asset name" }),
                 category: this._createCategorySelect(oAsset.category),
+                assetType: new Input({ value: oAsset.assetType || oAsset.category, placeholder: "Asset Type" }),
                 user: new Input({ value: oAsset.user, placeholder: "Assigned user or IT Room" }),
                 location: this._createLocationSelect(oAsset.location),
-                status: this._createStatusSelect(oAsset.status)
+                department: new Input({ value: oAsset.department || "IT", placeholder: "Department" }),
+                status: this._createStatusSelect(oAsset.status),
+                serialNumber: new Input({ value: oAsset.serialNumber || "", placeholder: "Serial Number" }),
+                vendor: new Input({ value: oAsset.vendor || "", placeholder: "Vendor" }),
+                purchaseDate: new Input({ value: oAsset.purchaseDate || "", placeholder: "Purchase Date" }),
+                cost: new Input({ value: oAsset.cost || "", placeholder: "Cost" }),
+                warranty: new Input({ value: oAsset.warranty || "", placeholder: "Warranty" }),
+                attachments: new Input({ value: oAsset.attachments || "", placeholder: "Attachment reference" })
             };
             this._assetDialog = new Dialog({
                 title: "Edit Asset",
-                contentWidth: "42rem",
+                contentWidth: "52rem",
                 stretchOnPhone: true,
                 content: [new VBox({
                     items: [
@@ -184,12 +248,20 @@ sap.ui.define([
                         this._createFormGrid([
                             this._createFormField("Asset Tag", this._assetFields.tag),
                             this._createFormField("Asset Name", this._assetFields.name),
-                            this._createFormField("Category", this._assetFields.category)
+                            this._createFormField("Asset Category", this._assetFields.category),
+                            this._createFormField("Asset Type", this._assetFields.assetType),
+                            this._createFormField("Serial Number", this._assetFields.serialNumber),
+                            this._createFormField("Vendor", this._assetFields.vendor),
+                            this._createFormField("Purchase Date", this._assetFields.purchaseDate),
+                            this._createFormField("Cost", this._assetFields.cost)
                         ]),
-                        new Title({ text: "Assignment Details", level: "H3", class: "assetFormSectionTitle" }),
+                        new Title({ text: "Assignment & Lifecycle", level: "H3", class: "assetFormSectionTitle" }),
                         this._createFormGrid([
                             this._createFormField("Assigned To", this._assetFields.user),
                             this._createFormField("Location", this._assetFields.location),
+                            this._createFormField("Department", this._assetFields.department),
+                            this._createFormField("Warranty", this._assetFields.warranty),
+                            this._createFormField("Attachments", this._assetFields.attachments),
                             this._createFormField("Status", this._assetFields.status)
                         ])
                     ],
@@ -211,11 +283,28 @@ sap.ui.define([
                 return;
             }
             var oAsset = this._editingAssetTag ? {
-                tag: oFields.tag.getValue(), name: sName, category: sCategory,
-                user: oFields.user.getValue().trim() || "IT Room", location: oFields.location.getSelectedKey(),
-                status: oFields.status.getSelectedKey()
+                tag: oFields.tag.getValue(),
+                name: sName,
+                category: sCategory,
+                assetType: oFields.assetType.getValue().trim() || sCategory,
+                user: oFields.user.getValue().trim() || "IT Room",
+                location: oFields.location.getSelectedKey(),
+                department: oFields.department.getValue().trim() || "IT",
+                status: oFields.status.getSelectedKey(),
+                serialNumber: oFields.serialNumber.getValue().trim(),
+                vendor: oFields.vendor.getValue().trim(),
+                purchaseDate: oFields.purchaseDate.getValue().trim(),
+                cost: oFields.cost.getValue().trim(),
+                warranty: oFields.warranty.getValue().trim(),
+                attachments: oFields.attachments.getValue().trim(),
+                assetUuid: this._editingAssetTag ? (this.getView().getModel("assets").getProperty("/items").find(function (oItem) { return oItem.tag === this._editingAssetTag; }.bind(this)) || {}).assetUuid || this._generateAssetUuid() : oDraft.assetUuid,
+                assetCode: this._editingAssetTag ? (this.getView().getModel("assets").getProperty("/items").find(function (oItem) { return oItem.tag === this._editingAssetTag; }.bind(this)) || {}).assetCode || "AST-" + this._editingAssetTag.replace("AST", "") : oDraft.assetCode,
+                qrCode: this._editingAssetTag ? (this.getView().getModel("assets").getProperty("/items").find(function (oItem) { return oItem.tag === this._editingAssetTag; }.bind(this)) || {}).qrCode || "QR-" + this._editingAssetTag : oDraft.qrCode,
+                auditRecord: this._editingAssetTag ? (this.getView().getModel("assets").getProperty("/items").find(function (oItem) { return oItem.tag === this._editingAssetTag; }.bind(this)) || {}).auditRecord || "Audit record updated on " + new Date().toLocaleDateString("en-GB") : oDraft.auditRecord,
+                lifecycleRecord: this._editingAssetTag ? (this.getView().getModel("assets").getProperty("/items").find(function (oItem) { return oItem.tag === this._editingAssetTag; }.bind(this)) || {}).lifecycleRecord || "Lifecycle record created; status set to " + this._getStatusLabel(oFields.status.getSelectedKey()) : oDraft.lifecycleRecord
             } : oDraft;
             oAsset.state = this._getStatusState(oAsset.status);
+            oAsset.warrantyExpiry = oAsset.warranty ? oAsset.warranty : oAsset.warrantyExpiry;
             var oModel = this.getView().getModel("assets");
             var aItems = oModel.getProperty("/items").slice();
             var iIndex = aItems.findIndex(function (oItem) { return oItem.tag === this._editingAssetTag; }.bind(this));
@@ -246,10 +335,16 @@ sap.ui.define([
             if (sStatus === "Available") {
                 return "Success";
             }
-            if (sStatus === "In Repair") {
+            if (sStatus === "In Repair" || sStatus === "Under_Repair") {
                 return "Warning";
             }
+            if (sStatus === "Lost" || sStatus === "Disposed") {
+                return "Error";
+            }
             return "Information";
+        },
+        _getStatusLabel: function (sStatus) {
+            return sStatus || "Available";
         },
         _nextAssetTag: function () {
             var iHighest = this.getView().getModel("assets").getProperty("/items").reduce(function (iMax, oAsset) {

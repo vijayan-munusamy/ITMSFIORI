@@ -30,6 +30,10 @@
                         <tnt:NavigationListItem text="Asset Assignment" key="assetAssignment" />
                         <tnt:NavigationListItem text="Asset Transfer" key="assetTransfer" />
                         <tnt:NavigationListItem text="Asset Return" key="assetReturn" />
+                        <tnt:NavigationListItem text="Asset Maintenance" key="assetMaintenance" />
+                        <tnt:NavigationListItem text="Lost Asset" key="assetLost" />
+                        <tnt:NavigationListItem text="Asset Disposal" key="assetDisposal" />
+                        <tnt:NavigationListItem text="Employee Acknowledgement" key="employeeAcknowledgement" />
                         <tnt:NavigationListItem text="Asset History" key="assetHistory" />
                         <tnt:NavigationListItem text="Warranty" key="warranty" />
                         <tnt:NavigationListItem text="AMC Contracts" key="amcContracts" />

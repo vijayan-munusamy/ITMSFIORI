@@ -1,0 +1,50 @@
+<mvc:View
+    controllerName="itsm.fiori.controller.AssetTransfer"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page title="Asset Transfer" class="sapUiContentPadding">
+        <content>
+            <VBox class="sapUiSmallMarginBottom">
+                <Title text="Transfer Asset" level="H2" />
+                <Text text="Actor: Asset Manager | Current Situation: Laptop -> John | Process: Select Asset, View Current Holder, Select New Employee, Submit" class="sapUiTinyMarginTop" />
+            </VBox>
+
+            <Table id="transferAssetTable" items="{transfer>/assignedAssets}" noDataText="No assigned assets available for transfer" class="sapUiSmallMarginTop">
+                <columns>
+                    <Column><Text text="Asset" /></Column>
+                    <Column><Text text="Current Holder" /></Column>
+                    <Column><Text text="Location" /></Column>
+                    <Column><Text text="Status" /></Column>
+                    <Column width="12rem"><Text text="Action" /></Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier title="{transfer>name}" text="{transfer>tag}" />
+                            <Text text="{transfer>user}" />
+                            <Text text="{transfer>location}" />
+                            <ObjectStatus text="{transfer>status}" state="Information" />
+                            <Button text="Transfer" type="Emphasized" press=".onSelectAssetForTransfer" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+
+            <VBox class="sapUiLargeMarginTop" visible="{= !!${transfer>/selectedAsset} }">
+                <Title text="Selected Asset" level="H3" />
+                <ObjectIdentifier title="{transfer>/selectedAsset/name}" text="{transfer>/selectedAsset/tag}" />
+                <Text text="Current Holder: {transfer>/selectedAsset/user}" />
+                <Text text="Current Location: {transfer>/selectedAsset/location}" />
+
+                <Title text="Select New Employee" level="H3" class="sapUiMediumMarginTop" />
+                <Select id="newEmployeeSelect" items="{transfer>/eligibleEmployees}" width="22rem">
+                    <items>
+                        <core:Item key="{transfer>id}" text="{transfer>name}" />
+                    </items>
+                </Select>
+                <Button text="Submit Transfer" type="Emphasized" press=".onSubmitTransfer" class="sapUiSmallMarginTop" />
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

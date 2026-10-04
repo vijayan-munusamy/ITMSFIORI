@@ -68,6 +68,41 @@
           "target": "TargetAssets"
         },
         {
+          "name": "RouteAssetAssignment",
+          "pattern": "asset-assignment",
+          "target": "TargetAssetAssignment"
+        },
+        {
+          "name": "RouteEmployeeAcknowledgement",
+          "pattern": "employee-acknowledgement",
+          "target": "TargetEmployeeAcknowledgement"
+        },
+        {
+          "name": "RouteAssetTransfer",
+          "pattern": "asset-transfer",
+          "target": "TargetAssetTransfer"
+        },
+        {
+          "name": "RouteAssetReturn",
+          "pattern": "asset-return",
+          "target": "TargetAssetReturn"
+        },
+        {
+          "name": "RouteAssetMaintenance",
+          "pattern": "asset-maintenance",
+          "target": "TargetAssetMaintenance"
+        },
+        {
+          "name": "RouteAssetLost",
+          "pattern": "asset-lost",
+          "target": "TargetAssetLost"
+        },
+        {
+          "name": "RouteAssetDisposal",
+          "pattern": "asset-disposal",
+          "target": "TargetAssetDisposal"
+        },
+        {
           "name": "RouteEmployees",
           "pattern": "employees",
           "target": "TargetEmployees"
@@ -111,6 +146,48 @@
           "transition": "slide",
           "viewId": "Assets",
           "viewName": "Assets"
+        },
+        "TargetAssetAssignment": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "AssetAssignment",
+          "viewName": "AssetAssignment"
+        },
+        "TargetEmployeeAcknowledgement": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "EmployeeAcknowledgement",
+          "viewName": "EmployeeAcknowledgement"
+        },
+        "TargetAssetTransfer": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "AssetTransfer",
+          "viewName": "AssetTransfer"
+        },
+        "TargetAssetReturn": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "AssetReturn",
+          "viewName": "AssetReturn"
+        },
+        "TargetAssetMaintenance": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "AssetMaintenance",
+          "viewName": "AssetMaintenance"
+        },
+        "TargetAssetLost": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "AssetLost",
+          "viewName": "AssetLost"
+        },
+        "TargetAssetDisposal": {
+          "viewType": "XML",
+          "transition": "slide",
+          "viewId": "AssetDisposal",
+          "viewName": "AssetDisposal"
         },
         "TargetEmployees": {
           "viewType": "XML",

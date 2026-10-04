@@ -50,25 +50,53 @@ sap.ui.define([
         onEditAsset: function () {
             var oAsset = this.getView().getModel("assets").getProperty("/selectedAsset");
             var that = this;
+            var aStatuses = [
+                { key: "Available", text: "Available" },
+                { key: "Assigned", text: "Assigned" },
+                { key: "Under_Repair", text: "Under Repair" },
+                { key: "Lost", text: "Lost" },
+                { key: "Disposed", text: "Disposed" }
+            ];
             var oStatus = new Select({
-                selectedKey: oAsset.status,
-                items: [new Item({ key: "Available", text: "Available" }), new Item({ key: "Assigned", text: "Assigned" }), new Item({ key: "In Repair", text: "In Repair" })]
+                selectedKey: oAsset.status === "In Repair" ? "Under_Repair" : oAsset.status,
+                items: aStatuses.map(function (oItem) {
+                    return new Item({ key: oItem.key, text: oItem.text });
+                })
             });
             this._editFields = {
                 name: new Input({ value: oAsset.name }),
                 category: new Input({ value: oAsset.category }),
+                assetType: new Input({ value: oAsset.assetType || oAsset.category }),
                 user: new Input({ value: oAsset.user }),
                 location: new Input({ value: oAsset.location }),
+                department: new Input({ value: oAsset.department || "IT" }),
+                serialNumber: new Input({ value: oAsset.serialNumber || "" }),
+                vendor: new Input({ value: oAsset.vendor || "" }),
+                cost: new Input({ value: oAsset.cost || "" }),
+                warranty: new Input({ value: oAsset.warranty || "" }),
                 status: oStatus
             };
             var aControls = [];
-            ["name", "category", "user", "location", "status"].forEach(function (sField) {
-                aControls.push(new Label({ text: sField.charAt(0).toUpperCase() + sField.slice(1) }));
-                aControls.push(that._editFields[sField]);
+            var aFieldNames = [
+                { id: "name", label: "Asset Name" },
+                { id: "category", label: "Category" },
+                { id: "assetType", label: "Asset Type" },
+                { id: "user", label: "Assigned User" },
+                { id: "location", label: "Location" },
+                { id: "department", label: "Department" },
+                { id: "serialNumber", label: "Serial Number" },
+                { id: "vendor", label: "Vendor" },
+                { id: "cost", label: "Cost" },
+                { id: "warranty", label: "Warranty" },
+                { id: "status", label: "Status" }
+            ];
+            aFieldNames.forEach(function (oField) {
+                aControls.push(new Label({ text: oField.label }));
+                aControls.push(that._editFields[oField.id]);
             });
             this._editDialog = new Dialog({
                 title: "Edit Asset",
-                contentWidth: "28rem",
+                contentWidth: "32rem",
                 content: [new VBox({ items: aControls, class: "sapUiSmallMargin" })],
                 beginButton: new Button({ text: "Save", type: "Emphasized", press: this._saveAsset.bind(this) }),
                 endButton: new Button({ text: "Cancel", press: function () { that._editDialog.close(); } })
@@ -83,10 +111,22 @@ sap.ui.define([
             var sTag = oAsset.tag;
             oAsset.name = oFields.name.getValue().trim();
             oAsset.category = oFields.category.getValue().trim();
+            oAsset.assetType = oFields.assetType.getValue().trim() || oAsset.category;
             oAsset.user = oFields.user.getValue().trim();
             oAsset.location = oFields.location.getValue().trim();
+            oAsset.department = oFields.department.getValue().trim();
+            oAsset.serialNumber = oFields.serialNumber.getValue().trim();
+            oAsset.vendor = oFields.vendor.getValue().trim();
+            oAsset.cost = oFields.cost.getValue().trim();
+            oAsset.warranty = oFields.warranty.getValue().trim();
             oAsset.status = oFields.status.getSelectedKey();
-            oAsset.state = oAsset.status === "Available" ? "Success" : (oAsset.status === "In Repair" ? "Warning" : "Information");
+            oAsset.state = oAsset.status === "Available" ? "Success" :
+                           (oAsset.status === "In Repair" || oAsset.status === "Under_Repair" ? "Warning" :
+                           (oAsset.status === "Lost" || oAsset.status === "Disposed" ? "Error" : "Information"));
+            if (oAsset.status === "Disposed") {
+                oAsset.assetLocked = true;
+                oAsset.isAssignable = false;
+            }
             oModel.setProperty("/selectedAsset", Object.assign({}, oAsset));
             var aItems = oModel.getProperty("/items").slice();
             var iIndex = aItems.findIndex(function (oItem) { return oItem.tag === sTag; });

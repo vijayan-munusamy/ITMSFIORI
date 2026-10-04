@@ -28,6 +28,20 @@ sap.ui.define([
                 oRouter.navTo("RouteDashboard");
             } else if (sKey === "assets") {
                 oRouter.navTo("RouteAssets");
+            } else if (sKey === "assetAssignment") {
+                oRouter.navTo("RouteAssetAssignment");
+            } else if (sKey === "assetTransfer") {
+                oRouter.navTo("RouteAssetTransfer");
+            } else if (sKey === "assetReturn") {
+                oRouter.navTo("RouteAssetReturn");
+            } else if (sKey === "assetMaintenance") {
+                oRouter.navTo("RouteAssetMaintenance");
+            } else if (sKey === "assetLost") {
+                oRouter.navTo("RouteAssetLost");
+            } else if (sKey === "assetDisposal") {
+                oRouter.navTo("RouteAssetDisposal");
+            } else if (sKey === "employeeAcknowledgement") {
+                oRouter.navTo("RouteEmployeeAcknowledgement");
             } else if (sKey === "employeeDirectory") {
                 oRouter.navTo("RouteEmployees");
             } else if (sKey === "incidents") {

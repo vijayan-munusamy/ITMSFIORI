@@ -41,8 +41,22 @@
                         <form:SimpleForm editable="false" layout="ResponsiveGridLayout" maxContainerCols="2" labelSpanL="4" labelSpanM="4" columnsL="2" columnsM="2">
                             <form:content>
                                 <m:Label text="Asset Tag" /><m:Text text="{assets>/selectedAsset/tag}" />
+                                <m:Label text="Asset Type" /><m:Text text="{assets>/selectedAsset/assetType}" />
                                 <m:Label text="Serial Number" /><m:Text text="{assets>/selectedAsset/serialNumber}" />
+                                <m:Label text="Vendor" /><m:Text text="{assets>/selectedAsset/vendor}" />
                                 <m:Label text="Purchase Date" /><m:Text text="{assets>/selectedAsset/purchaseDate}" />
+                                <m:Label text="Cost" /><m:Text text="{assets>/selectedAsset/cost}" />
+                                <m:Label text="Department" /><m:Text text="{assets>/selectedAsset/department}" />
+                                <m:Label text="Warranty" /><m:Text text="{assets>/selectedAsset/warranty}" />
+                                <m:Label text="Asset UUID" /><m:Text text="{assets>/selectedAsset/assetUuid}" />
+                                <m:Label text="Asset Code" /><m:Text text="{assets>/selectedAsset/assetCode}" />
+                                <m:Label text="QR Code" /><m:Text text="{assets>/selectedAsset/qrCode}" />
+                                <m:Label text="Lifecycle Record" /><m:Text text="{assets>/selectedAsset/lifecycleRecord}" />
+                                <m:Label text="Audit Record" /><m:Text text="{assets>/selectedAsset/auditRecord}" />
+                                <m:Label text="Assignment Record" /><m:Text text="{assets>/selectedAsset/assignmentRecord}" />
+                                <m:Label text="Lifecycle Event" /><m:Text text="{assets>/selectedAsset/lifecycleEvent}" />
+                                <m:Label text="Notification" /><m:Text text="{assets>/selectedAsset/notification}" />
+                                <m:Label text="Acknowledgement" /><m:ObjectStatus text="{assets>/selectedAsset/acknowledgementStatus}" state="{= ${assets>/selectedAsset/acknowledgementStatus} === 'Acknowledged' ? 'Success' : (${assets>/selectedAsset/acknowledgementStatus} === 'Rejected' ? 'Error' : (${assets>/selectedAsset/acknowledgementStatus} === 'None' ? 'None' : 'Warning')) }" />
                                 <m:Label text="Warranty Expiry" /><m:ObjectStatus text="{assets>/selectedAsset/warrantyExpiry}" state="Success" />
                             </form:content>
                         </form:SimpleForm>
