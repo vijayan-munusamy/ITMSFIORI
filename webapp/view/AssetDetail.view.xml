@@ -42,6 +42,8 @@
                             <form:content>
                                 <m:Label text="Asset Tag" /><m:Text text="{assets>/selectedAsset/tag}" />
                                 <m:Label text="Asset Type" /><m:Text text="{assets>/selectedAsset/assetType}" />
+                                <m:Label text="Manufacturer" /><m:Text text="{assets>/selectedAsset/manufacturer}" />
+                                <m:Label text="Model" /><m:Text text="{assets>/selectedAsset/model}" />
                                 <m:Label text="Serial Number" /><m:Text text="{assets>/selectedAsset/serialNumber}" />
                                 <m:Label text="Vendor" /><m:Text text="{assets>/selectedAsset/vendor}" />
                                 <m:Label text="Purchase Date" /><m:Text text="{assets>/selectedAsset/purchaseDate}" />

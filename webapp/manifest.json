@@ -26,7 +26,8 @@
         "sap.viz": {},
         "sap.uxap": {},
         "sap.ui.layout": {},
-        "sap.tnt": {}
+        "sap.tnt": {},
+        "sap.ui.unified": {}
       }
     },
     "models": {
