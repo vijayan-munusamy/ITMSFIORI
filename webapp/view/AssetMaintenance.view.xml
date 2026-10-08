@@ -2,78 +2,91 @@
     controllerName="itsm.fiori.controller.AssetMaintenance"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:core="sap.ui.core">
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
     <Page title="Asset Maintenance" class="sapUiContentPadding">
         <content>
             <VBox class="sapUiSmallMarginBottom">
                 <Title text="Maintenance Workflow" level="H2" />
-                <Text text="Actor: Asset Manager | Process: Open Maintenance Ticket, Record Vendor, Issue, Cost, Repair Date, and System | Status: Under Repair" class="sapUiTinyMarginTop" />
+                <Text text="Actor: Asset Manager | Process: Open Maintenance Ticket -> Record Details -> Complete" class="sapUiTinyMarginTop" />
             </VBox>
 
-            <Table id="maintenanceAssetTable" items="{maintenance>/assets}" noDataText="No assets available for maintenance" class="sapUiSmallMarginTop">
-                <columns>
-                    <Column><Text text="Asset" /></Column>
-                    <Column><Text text="Current Holder" /></Column>
-                    <Column><Text text="Location" /></Column>
-                    <Column><Text text="Status" /></Column>
-                    <Column width="12rem"><Text text="Action" /></Column>
-                </columns>
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <ObjectIdentifier title="{maintenance>name}" text="{maintenance>tag}" />
-                            <Text text="{maintenance>user}" />
-                            <Text text="{maintenance>location}" />
-                            <ObjectStatus text="{maintenance>status}" state="{= ${maintenance>status} === 'Under_Repair' ? 'Warning' : 'Information' }" />
-                            <Button text="Select" type="Emphasized" press=".onSelectAssetForMaintenance" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
-
-            <VBox class="sapUiLargeMarginTop" visible="{= !!${maintenance>/selectedAsset} }">
-                <Title text="Maintenance Ticket" level="H3" />
-                <ObjectIdentifier title="{maintenance>/selectedAsset/name}" text="{maintenance>/selectedAsset/tag}" />
-
-                <Label text="Vendor" class="sapUiMediumMarginTop" />
-                <Input value="{maintenance>/ticket/vendor}" placeholder="Enter vendor name" width="25rem" />
-
-                <Label text="Issue" class="sapUiMediumMarginTop" />
-                <Input value="{maintenance>/ticket/issue}" placeholder="Describe issue" width="25rem" />
-
-                <Label text="Cost" class="sapUiMediumMarginTop" />
-                <Input value="{maintenance>/ticket/cost}" placeholder="SAR 0" width="25rem" />
-
-                <Label text="Repair Date" class="sapUiMediumMarginTop" />
-                <DatePicker value="{maintenance>/ticket/repairDate}" width="25rem" />
-
-                <Label text="System" class="sapUiMediumMarginTop" />
-                <Input value="{maintenance>/ticket/system}" placeholder="System / module" width="25rem" />
-
-                <Button text="Open Maintenance Ticket" type="Emphasized" press=".onOpenMaintenanceTicket" class="sapUiSmallMarginTop" visible="{= ${maintenance>/selectedAsset/status} === 'Assigned' }" />
-                <Button text="Update Ticket Details" type="Emphasized" press=".onOpenMaintenanceTicket" class="sapUiSmallMarginTop" visible="{= ${maintenance>/selectedAsset/status} === 'Under_Repair' }" />
-
-                <VBox visible="{= ${maintenance>/selectedAsset/status} === 'Under_Repair' }" class="sapUiLargeMarginTop">
-                    <Title text="Complete Maintenance" level="H3" />
-                    <Label text="Outcome" class="sapUiMediumMarginTop" />
-                    <Select id="maintenanceOutcomeSelect" selectedKey="Repaired" width="20rem">
+            <Wizard id="maintenanceWizard" finishButtonText="Complete Maintenance" complete=".onCompleteMaintenance">
+                <WizardStep id="stepMaintenanceAsset" title="Select Asset" validated="true">
+                    <Table id="maintenanceAssetTable" items="{maintenance>/assets}" noDataText="No assets available for maintenance" class="sapUiSmallMarginTop">
+                        <columns>
+                            <Column><Text text="Asset" /></Column>
+                            <Column><Text text="Current Holder" /></Column>
+                            <Column><Text text="Location" /></Column>
+                            <Column><Text text="Status" /></Column>
+                            <Column width="12rem"><Text text="Action" /></Column>
+                        </columns>
                         <items>
-                            <core:Item key="Repaired" text="Repaired" />
-                            <core:Item key="Not Repaired" text="Not Repaired" />
+                            <ColumnListItem>
+                                <cells>
+                                    <ObjectIdentifier title="{maintenance>name}" text="{maintenance>tag}" />
+                                    <Text text="{maintenance>user}" />
+                                    <Text text="{maintenance>location}" />
+                                    <ObjectStatus text="{maintenance>status}" state="{= ${maintenance>status} === 'Under_Repair' ? 'Warning' : 'Information' }" />
+                                    <Button text="Select" type="Emphasized" press=".onSelectAssetForMaintenance" />
+                                </cells>
+                            </ColumnListItem>
                         </items>
-                    </Select>
+                    </Table>
+                </WizardStep>
 
-                    <Label text="If not repaired" class="sapUiMediumMarginTop" />
-                    <Select id="maintenanceFailureStatusSelect" selectedKey="Damaged" width="20rem">
-                        <items>
-                            <core:Item key="Damaged" text="Damaged" />
-                            <core:Item key="Disposed" text="Disposed" />
-                        </items>
-                    </Select>
+                <WizardStep id="stepTicketDetails" title="Ticket Details" validated="true">
+                    <form:SimpleForm layout="ResponsiveGridLayout" title="Maintenance Ticket" editable="true" columnsL="2" columnsM="2">
+                        <form:content>
+                            <core:Title text="Selected Asset" />
+                            <Label text="Asset" />
+                            <Text text="{maintenance>/selectedAsset/name} ({maintenance>/selectedAsset/tag})" />
+                            
+                            <core:Title text="Ticket Information" />
+                            <Label text="Vendor" />
+                            <Input value="{maintenance>/ticket/vendor}" placeholder="Enter vendor name" width="100%" />
 
-                    <Button text="Complete Maintenance" type="Accept" press=".onCompleteMaintenance" class="sapUiSmallMarginTop" />
-                </VBox>
-            </VBox>
+                            <Label text="Issue" />
+                            <Input value="{maintenance>/ticket/issue}" placeholder="Describe issue" width="100%" />
+
+                            <Label text="Cost" />
+                            <Input value="{maintenance>/ticket/cost}" placeholder="SAR 0" width="100%" />
+
+                            <Label text="Repair Date" />
+                            <DatePicker value="{maintenance>/ticket/repairDate}" width="100%" />
+
+                            <Label text="System" />
+                            <Input value="{maintenance>/ticket/system}" placeholder="System / module" width="100%" />
+                            
+                            <Label />
+                            <Button text="Open Ticket" type="Emphasized" press=".onOpenMaintenanceTicket" visible="{= ${maintenance>/selectedAsset/status} === 'Assigned' }" width="150px" />
+                            <Button text="Update Ticket" type="Emphasized" press=".onOpenMaintenanceTicket" visible="{= ${maintenance>/selectedAsset/status} === 'Under_Repair' }" width="150px" />
+                        </form:content>
+                    </form:SimpleForm>
+                </WizardStep>
+
+                <WizardStep id="stepComplete" title="Complete Maintenance" validated="true">
+                    <form:SimpleForm layout="ResponsiveGridLayout" title="Outcome Details" editable="true" columnsL="1" columnsM="1">
+                        <form:content>
+                            <Label text="Outcome" />
+                            <Select id="maintenanceOutcomeSelect" selectedKey="Repaired" width="100%">
+                                <items>
+                                    <core:Item key="Repaired" text="Repaired" />
+                                    <core:Item key="Not Repaired" text="Not Repaired" />
+                                </items>
+                            </Select>
+
+                            <Label text="If not repaired" />
+                            <Select id="maintenanceFailureStatusSelect" selectedKey="Damaged" width="100%">
+                                <items>
+                                    <core:Item key="Damaged" text="Damaged" />
+                                    <core:Item key="Disposed" text="Disposed" />
+                                </items>
+                            </Select>
+                        </form:content>
+                    </form:SimpleForm>
+                </WizardStep>
+            </Wizard>
         </content>
     </Page>
 </mvc:View>

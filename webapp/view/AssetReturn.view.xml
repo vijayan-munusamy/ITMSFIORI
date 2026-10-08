@@ -2,56 +2,67 @@
     controllerName="itsm.fiori.controller.AssetReturn"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:core="sap.ui.core">
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
     <Page title="Asset Return" class="sapUiContentPadding">
         <content>
             <VBox class="sapUiSmallMarginBottom">
-                <Title text="Return Asset" level="H2" />
-                <Text text="Actor: Asset Manager | Reasons: Employee Exit, Replacement, Project Completion, Asset Exchange | Process: Select Asset, Select Return, Check Condition, Capture Remarks" class="sapUiTinyMarginTop" />
+                <Title text="Return Asset Workflow" level="H2" />
+                <Text text="Actor: Asset Manager | Reasons: Employee Exit, Replacement, Project Completion, Asset Exchange" class="sapUiTinyMarginTop" />
             </VBox>
 
-            <Table id="returnAssetTable" items="{return>/assignedAssets}" noDataText="No assigned assets available for return" class="sapUiSmallMarginTop">
-                <columns>
-                    <Column><Text text="Asset" /></Column>
-                    <Column><Text text="Current Holder" /></Column>
-                    <Column><Text text="Location" /></Column>
-                    <Column><Text text="Status" /></Column>
-                    <Column width="12rem"><Text text="Action" /></Column>
-                </columns>
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <ObjectIdentifier title="{return>name}" text="{return>tag}" />
-                            <Text text="{return>user}" />
-                            <Text text="{return>location}" />
-                            <ObjectStatus text="{return>status}" state="Information" />
-                            <Button text="Return" type="Emphasized" press=".onSelectAssetForReturn" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
+            <Wizard id="returnWizard" finishButtonText="Confirm Return" complete=".onConfirmReturn">
+                <WizardStep id="stepReturnAsset" title="Select Asset" validated="true">
+                    <Table id="returnAssetTable" items="{return>/assignedAssets}" noDataText="No assigned assets available for return" class="sapUiSmallMarginTop">
+                        <columns>
+                            <Column><Text text="Asset" /></Column>
+                            <Column><Text text="Current Holder" /></Column>
+                            <Column><Text text="Location" /></Column>
+                            <Column><Text text="Status" /></Column>
+                            <Column width="12rem"><Text text="Action" /></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <ObjectIdentifier title="{return>name}" text="{return>tag}" />
+                                    <Text text="{return>user}" />
+                                    <Text text="{return>location}" />
+                                    <ObjectStatus text="{return>status}" state="Information" />
+                                    <Button text="Select" type="Emphasized" press=".onSelectAssetForReturn" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </WizardStep>
 
-            <VBox class="sapUiLargeMarginTop" visible="{= !!${return>/selectedAsset} }">
-                <Title text="Return Details" level="H3" />
-                <ObjectIdentifier title="{return>/selectedAsset/name}" text="{return>/selectedAsset/tag}" />
-                <Text text="Current Holder: {return>/selectedAsset/user}" />
-                <Text text="Reason: {return>/selectedAsset/returnReason}" />
+                <WizardStep id="stepReturnDetails" title="Return Details" validated="true">
+                    <form:SimpleForm layout="ResponsiveGridLayout" title="Return Assessment" editable="true" columnsL="1" columnsM="1">
+                        <form:content>
+                            <Label text="Selected Asset" />
+                            <Text text="{return>/selectedAsset/name} ({return>/selectedAsset/tag})" />
+                            
+                            <Label text="Current Holder" />
+                            <Text text="{return>/selectedAsset/user}" />
+                            
+                            <Label text="Reason for Return" />
+                            <Text text="{return>/selectedAsset/returnReason}" />
 
-                <Label text="Condition" class="sapUiMediumMarginTop" />
-                <Select id="returnConditionSelect" selectedKey="Good" width="20rem">
-                    <items>
-                        <core:Item key="Good" text="Good" />
-                        <core:Item key="Damaged" text="Damaged" />
-                        <core:Item key="Lost" text="Lost" />
-                        <core:Item key="Broken" text="Broken" />
-                    </items>
-                </Select>
+                            <Label text="Condition" />
+                            <Select id="returnConditionSelect" selectedKey="Good" width="100%">
+                                <items>
+                                    <core:Item key="Good" text="Good" />
+                                    <core:Item key="Damaged" text="Damaged" />
+                                    <core:Item key="Lost" text="Lost" />
+                                    <core:Item key="Broken" text="Broken" />
+                                </items>
+                            </Select>
 
-                <Label text="Remarks" class="sapUiMediumMarginTop" />
-                <TextArea id="returnRemarks" value="{return>/remarks}" width="30rem" rows="4" placeholder="Capture return remarks" />
-
-                <Button text="Confirm Return" type="Emphasized" press=".onConfirmReturn" class="sapUiSmallMarginTop" />
-            </VBox>
+                            <Label text="Remarks" />
+                            <TextArea id="returnRemarks" value="{return>/remarks}" rows="4" placeholder="Capture return remarks" width="100%" />
+                        </form:content>
+                    </form:SimpleForm>
+                </WizardStep>
+            </Wizard>
         </content>
     </Page>
 </mvc:View>

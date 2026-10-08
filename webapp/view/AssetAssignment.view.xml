@@ -2,7 +2,8 @@
     controllerName="itsm.fiori.controller.AssetAssignment"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:core="sap.ui.core">
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
     <Page title="Asset Assignment" class="sapUiContentPadding">
         <headerContent>
             <Button text="Submit Assignment" type="Emphasized" icon="sap-icon://accept" press=".onSubmitAssignment" />
@@ -67,21 +68,34 @@
                 </WizardStep>
 
                 <WizardStep id="stepReview" title="Review Details" validated="true">
-                    <VBox class="sapUiSmallMarginTop">
-                        <Title text="Review Assignment" level="H3" />
-                        <ObjectStatus text="Selected Asset" state="Information" class="sapUiTinyMarginBottom" />
-                        <ObjectIdentifier title="{assignment>/selectedAsset/name}" text="{assignment>/selectedAsset/tag}" />
-                        <Text text="Category: {assignment>/selectedAsset/category}" />
-                        <Text text="Location: {assignment>/selectedAsset/location}" />
-                        <Text text="Current Status: {assignment>/selectedAsset/status}" />
-                        <Text text="System: Create Assignment Record, Create Lifecycle Event, Update Asset Status to ASSIGNED, Notification sent to employee, Pending Acknowledgement" class="sapUiSmallMarginTop" />
+                    <form:SimpleForm layout="ResponsiveGridLayout" editable="false" title="Review Assignment" columnsL="2" columnsM="2">
+                        <form:content>
+                            <core:Title text="Selected Asset" />
+                            <Label text="Asset Name" />
+                            <Text text="{assignment>/selectedAsset/name}" />
+                            <Label text="Asset Tag" />
+                            <Text text="{assignment>/selectedAsset/tag}" />
+                            <Label text="Category" />
+                            <Text text="{assignment>/selectedAsset/category}" />
+                            <Label text="Location" />
+                            <Text text="{assignment>/selectedAsset/location}" />
+                            <Label text="Current Status" />
+                            <Text text="{assignment>/selectedAsset/status}" />
 
-                        <ObjectStatus text="Selected Employee" state="Information" class="sapUiMediumMarginTop sapUiTinyMarginBottom" />
-                        <ObjectIdentifier title="{assignment>/selectedEmployee/name}" text="{assignment>/selectedEmployee/id}" />
-                        <Text text="Department: {assignment>/selectedEmployee/department}" />
-                        <Text text="Location: {assignment>/selectedEmployee/location}" />
-                        <Text text="Status: {assignment>/selectedEmployee/status}" />
-                    </VBox>
+                            <core:Title text="Selected Employee" />
+                            <Label text="Employee Name" />
+                            <Text text="{assignment>/selectedEmployee/name}" />
+                            <Label text="Employee ID" />
+                            <Text text="{assignment>/selectedEmployee/id}" />
+                            <Label text="Department" />
+                            <Text text="{assignment>/selectedEmployee/department}" />
+                            <Label text="Location" />
+                            <Text text="{assignment>/selectedEmployee/location}" />
+                            <Label text="Status" />
+                            <Text text="{assignment>/selectedEmployee/status}" />
+                        </form:content>
+                    </form:SimpleForm>
+                    <MessageStrip type="Information" showIcon="true" text="System Actions: Create Assignment Record, Create Lifecycle Event, Update Asset Status to ASSIGNED, Send Notification, Await Acknowledgement" class="sapUiSmallMarginTop" />
                 </WizardStep>
             </Wizard>
         </content>

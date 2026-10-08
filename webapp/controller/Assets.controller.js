@@ -1,4 +1,9 @@
 sap.ui.define([
+    "sap/m/Page",
+    "sap/m/NavContainer",
+    "sap/m/StandardListItem",
+    "sap/m/List",
+    "sap/m/ScrollContainer",
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
@@ -6,6 +11,7 @@ sap.ui.define([
     "sap/m/MessageToast",
     "sap/m/MessageBox",
     "sap/m/Dialog",
+    "sap/m/HBox",
     "sap/m/VBox",
     "sap/m/Title",
     "sap/m/Text",
@@ -21,7 +27,7 @@ sap.ui.define([
     "sap/ui/layout/Grid",
     "sap/m/DatePicker",
     "sap/ui/unified/FileUploader"
-], function (Controller, JSONModel, Filter, FilterOperator, MessageToast, MessageBox, Dialog, VBox, Title, Text, ObjectIdentifier, ObjectStatus, Label, Input, Select, Item, Button, Wizard, WizardStep, Grid, DatePicker, FileUploader) {
+], function (Page, NavContainer, StandardListItem, List, ScrollContainer, Controller, JSONModel, Filter, FilterOperator, MessageToast, MessageBox, Dialog, HBox, VBox, Title, Text, ObjectIdentifier, ObjectStatus, Label, Input, Select, Item, Button, Wizard, WizardStep, Grid, DatePicker, FileUploader) {
     "use strict";
 
     return Controller.extend("itsm.fiori.controller.Assets", {
@@ -162,7 +168,7 @@ sap.ui.define([
         },
         _createFormGrid: function (aFields) {
             return new Grid({
-                defaultSpan: "XL6 L6 M6 S12",
+                defaultSpan: "XL12 L12 M12 S12",
                 hSpacing: 0.5,
                 vSpacing: 0.5,
                 content: aFields
@@ -225,92 +231,183 @@ sap.ui.define([
                     ]
                 });
             };
-            var oStepAsset = new WizardStep({
-                title: "Asset Information",
-                validated: true,
-                content: [this._createFormGrid([
-                    this._createFormField("Asset Tag", oTag),
-                    this._createFormField("Asset Name", oName),
-                    this._createFormField("Asset Category", oCategory),
-                    this._createFormField("Asset Type", oAssetType),
-                    this._createFormField("Serial Number", oSerialNumber),
-                    this._createFormField("Manufacturer", oManufacturer),
-                    this._createFormField("Model", oModelName),
-                    this._createFormField("Vendor", oVendor)
+
+            var oPageAsset = new Page({
+                showHeader: false,
+                content: [new Title({ text: 'Asset Information', level: 'H3', class: 'sapUiSmallMargin' }), this._createFormGrid([
+                    this._createFormField('Asset Tag', oTag),
+                    this._createFormField('Asset Name', oName),
+                    this._createFormField('Asset Category', oCategory),
+                    this._createFormField('Asset Type', oAssetType),
+                    this._createFormField('Serial Number', oSerialNumber),
+                    this._createFormField('Manufacturer', oManufacturer),
+                    this._createFormField('Model', oModelName),
+                    this._createFormField('Vendor', oVendor)
                 ])]
             });
-            var oStepProcurement = new WizardStep({
-                title: "Procurement",
-                validated: true,
-                content: [this._createFormGrid([
-                    this._createFormField("Purchase Date", oPurchaseDate),
-                    this._createFormField("Purchase Cost", oCost),
-                    this._createFormField("Invoice Number", oInvoiceNumber),
-                    this._createFormField("Vendor", oPurchaseVendor)
+            var oPageProcurement = new Page({
+                showHeader: false,
+                content: [new Title({ text: 'Procurement', level: 'H3', class: 'sapUiSmallMargin' }), this._createFormGrid([
+                    this._createFormField('Purchase Date', oPurchaseDate),
+                    this._createFormField('Purchase Cost', oCost),
+                    this._createFormField('Invoice Number', oInvoiceNumber),
+                    this._createFormField('Vendor', oPurchaseVendor)
                 ])]
             });
-            var oStepWarranty = new WizardStep({
-                title: "Warranty",
-                validated: true,
-                content: [this._createFormGrid([
-                    this._createFormField("Warranty Start Date", oWarrantyStartDate),
-                    this._createFormField("Warranty End Date", oWarrantyEndDate)
+            var oPageWarranty = new Page({
+                showHeader: false,
+                content: [new Title({ text: 'Warranty', level: 'H3', class: 'sapUiSmallMargin' }), this._createFormGrid([
+                    this._createFormField('Warranty Start Date', oWarrantyStartDate),
+                    this._createFormField('Warranty End Date', oWarrantyEndDate)
                 ])]
             });
-            var oStepLocation = new WizardStep({
-                title: "Location",
-                validated: true,
-                content: [this._createFormGrid([
-                    this._createFormField("Location", oLocation),
-                    this._createFormField("Storage Location", oStorageLocation)
+            var oPageLocation = new Page({
+                showHeader: false,
+                content: [new Title({ text: 'Location', level: 'H3', class: 'sapUiSmallMargin' }), this._createFormGrid([
+                    this._createFormField('Location', oLocation),
+                    this._createFormField('Storage Location', oStorageLocation)
                 ])]
             });
-            var oStepDocuments = new WizardStep({
-                title: "Documents",
-                validated: true,
-                content: [this._createFormGrid([
-                    this._createFormField("Invoice", fnCreateUploader("invoice")),
-                    this._createFormField("Warranty Certificate", fnCreateUploader("warrantyCertificate")),
-                    this._createFormField("Asset Image", fnCreateUploader("assetImage"))
+            var oPageDocuments = new Page({
+                showHeader: false,
+                content: [new Title({ text: 'Documents', level: 'H3', class: 'sapUiSmallMargin' }), this._createFormGrid([
+                    this._createFormField('Invoice', fnCreateUploader('invoice')),
+                    this._createFormField('Warranty Certificate', fnCreateUploader('warrantyCertificate')),
+                    this._createFormField('Asset Image', fnCreateUploader('assetImage'))
                 ])]
             });
-            var oStepReview = new WizardStep({
-                title: "Review & Save",
-                validated: true,
+            var oPageReview = new Page({
+                showHeader: false,
                 content: [new VBox({
                     items: [
-                        new Title({ text: "Review & Save", level: "H3", class: "sapUiBottomMargin" }),
+                        new Title({ text: 'Review & Save', level: 'H3', class: 'sapUiBottomMargin' }),
                         this._createFormGrid([
-                            this._createFormField("Asset Tag", new Text({ text: "{assetDraft>/tag}" })),
-                            this._createFormField("Asset Name", new Text({ text: "{assetDraft>/name}" })),
-                            this._createFormField("Category", new Text({ text: "{assetDraft>/category}" })),
-                            this._createFormField("Type", new Text({ text: "{assetDraft>/assetType}" })),
-                            this._createFormField("Manufacturer", new Text({ text: "{assetDraft>/manufacturer}" })),
-                            this._createFormField("Model", new Text({ text: "{assetDraft>/model}" })),
-                            this._createFormField("Serial Number", new Text({ text: "{assetDraft>/serialNumber}" })),
-                            this._createFormField("Vendor", new Text({ text: "{assetDraft>/vendor}" })),
-                            this._createFormField("Purchase Date", new Text({ text: "{assetDraft>/purchaseDate}" })),
-                            this._createFormField("Cost", new Text({ text: "{assetDraft>/purchaseCost} SAR" })),
-                            this._createFormField("Location", new Text({ text: "{assetDraft>/location}" }))
+                            this._createFormField('Asset Tag', new Text({ text: '{assetDraft>/tag}' })),
+                            this._createFormField('Asset Name', new Text({ text: '{assetDraft>/name}' })),
+                            this._createFormField('Category', new Text({ text: '{assetDraft>/category}' })),
+                            this._createFormField('Type', new Text({ text: '{assetDraft>/assetType}' })),
+                            this._createFormField('Manufacturer', new Text({ text: '{assetDraft>/manufacturer}' })),
+                            this._createFormField('Model', new Text({ text: '{assetDraft>/model}' })),
+                            this._createFormField('Serial Number', new Text({ text: '{assetDraft>/serialNumber}' })),
+                            this._createFormField('Vendor', new Text({ text: '{assetDraft>/vendor}' })),
+                            this._createFormField('Purchase Date', new Text({ text: '{assetDraft>/purchaseDate}' })),
+                            this._createFormField('Cost', new Text({ text: '{assetDraft>/purchaseCost} SAR' })),
+                            this._createFormField('Location', new Text({ text: '{assetDraft>/location}' }))
                         ])
                     ],
-                    class: "sapUiSmallMargin"
+                    class: 'sapUiSmallMargin'
                 })]
             });
-            this._assetWizard = new Wizard({
-                finishButtonText: "Save",
-                steps: [oStepAsset, oStepProcurement, oStepWarranty, oStepLocation, oStepDocuments, oStepReview],
-                complete: this.onSaveAsset.bind(this)
+
+            var oNavContainer = new NavContainer({
+                pages: [oPageAsset, oPageProcurement, oPageWarranty, oPageLocation, oPageDocuments, oPageReview],
+                initialPage: oPageAsset
             });
+
+            var oList = new List({
+                mode: 'SingleSelectMaster', showSeparators: 'None',
+                items: [
+                    new StandardListItem({ title: 'Asset Information', icon: 'sap-icon://laptop' }),
+                    new StandardListItem({ title: 'Procurement', icon: 'sap-icon://money-bills' }),
+                    new StandardListItem({ title: 'Warranty', icon: 'sap-icon://shield' }),
+                    new StandardListItem({ title: 'Location', icon: 'sap-icon://map' }),
+                    new StandardListItem({ title: 'Documents', icon: 'sap-icon://document' }),
+                    new StandardListItem({ title: 'Review', icon: 'sap-icon://accept' })
+                ],
+                selectionChange: function (oEvent) {
+                    var iIndex = oList.indexOfItem(oEvent.getParameter('listItem'));
+                    that._setAssetWizardStep(iIndex);
+                }
+            });
+            oList.setSelectedItem(oList.getItems()[0]);
+
+            var oPreviousButton = new Button({
+                text: '← Previous',
+                type: 'Transparent',
+                press: this.onPreviousStep.bind(this)
+            });
+            var oNextButton = new Button({
+                text: 'Next →',
+                type: 'Emphasized',
+                press: this.onNextStep.bind(this)
+            });
+            var oSaveButton = new Button({
+                text: 'Save Asset',
+                type: 'Emphasized',
+                icon: 'sap-icon://save',
+                press: this.onSaveAsset.bind(this)
+            }).addStyleClass('sapUiTinyMarginBegin');
+            var oCancelButton = new Button({
+                text: 'Cancel',
+                type: 'Transparent',
+                press: this.onCancelAsset.bind(this)
+            });
+            var oStepButtons = new HBox({
+                items: [
+                    oPreviousButton,
+                    oNextButton.addStyleClass('sapUiTinyMarginBegin'),
+                    oSaveButton
+                ]
+            });
+            var oFooter = new HBox({
+                justifyContent: 'End',
+                alignItems: 'Center',
+                items: [oCancelButton, oStepButtons],
+                class: 'sapUiMediumMarginTop assetWizardFooter'
+            });
+
+            this._assetWizardPages = oNavContainer.getPages();
+            this._assetWizardNavContainer = oNavContainer;
+            this._assetWizardList = oList;
+            this._assetWizardFooter = oFooter;
+            this._assetWizardButtons = {
+                previous: oPreviousButton,
+                next: oNextButton,
+                save: oSaveButton,
+                cancel: oCancelButton
+            };
+            this._assetWizardStepIndex = 0;
+            this._setAssetWizardStep(0);
+
+            var oSplitLayout = new HBox({
+                height: '450px',
+                items: [
+                    new VBox({ width: '25%', items: [oList], class: 'sapUiSmallMarginEnd customWizardList' }),
+                    new ScrollContainer({ vertical: true, horizontal: false, width: '75%', height: '100%', content: [oNavContainer], class: 'assetWizardFormCard' })
+                ],
+                class: 'assetWizardLayout'
+            });
+
             this._assetDialog = new Dialog({
-                title: "Create Asset",
-                contentWidth: "52rem",
+                title: 'Create Asset',
+                contentWidth: '48rem',
                 stretchOnPhone: true,
-                content: [this._assetWizard],
-                beginButton: new Button({ text: "Cancel", press: this.onCancelAsset.bind(this) })
+                content: [oSplitLayout, oFooter]
             });
+            this._assetDialog.addStyleClass('assetWizardDialog');
             this.getView().addDependent(this._assetDialog);
             this._assetDialog.open();
+
+        },
+        _setAssetWizardStep: function (iIndex) {
+            if (!this._assetWizardPages || !this._assetWizardList || !this._assetWizardButtons || !this._assetWizardFooter) {
+                return;
+            }
+
+            var iLastStep = this._assetWizardPages.length - 1;
+            this._assetWizardStepIndex = Math.max(0, Math.min(iIndex, iLastStep));
+            this._assetWizardList.setSelectedItem(this._assetWizardList.getItems()[this._assetWizardStepIndex]);
+            this._assetWizardButtons.previous.setVisible(this._assetWizardStepIndex > 0);
+            this._assetWizardButtons.next.setVisible(this._assetWizardStepIndex < iLastStep);
+            this._assetWizardButtons.save.setVisible(this._assetWizardStepIndex === iLastStep);
+            this._assetWizardFooter.setJustifyContent(this._assetWizardStepIndex === 0 ? 'End' : 'SpaceBetween');
+            this._assetWizardNavContainer.to(this._assetWizardPages[this._assetWizardStepIndex]);
+        },
+        onNextStep: function () {
+            this._setAssetWizardStep(this._assetWizardStepIndex + 1);
+        },
+        onPreviousStep: function () {
+            this._setAssetWizardStep(this._assetWizardStepIndex - 1);
         },
         _openAssetEditDialog: function (oAsset) {
             var that = this;
@@ -470,6 +567,12 @@ sap.ui.define([
             var oDialog = this._assetDialog;
             this._assetDialog = null;
             this._assetWizard = null;
+            this._assetWizardPages = null;
+            this._assetWizardNavContainer = null;
+            this._assetWizardList = null;
+            this._assetWizardFooter = null;
+            this._assetWizardButtons = null;
+            this._assetWizardStepIndex = null;
             this._assetFields = null;
             this.getView().setModel(null, "assetDraft");
             if (oDialog) {

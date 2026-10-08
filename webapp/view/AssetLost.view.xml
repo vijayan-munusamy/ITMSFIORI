@@ -2,68 +2,81 @@
     controllerName="itsm.fiori.controller.AssetLost"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:core="sap.ui.core">
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
     <Page title="Lost Asset" class="sapUiContentPadding">
         <content>
             <VBox class="sapUiSmallMarginBottom">
                 <Title text="Lost Asset Workflow" level="H2" />
-                <Text text="Actor: Asset Manager | Process: Report Lost Asset, Investigation, Approval | Lifecycle: Assignment → Lost → Investigation → Closure" class="sapUiTinyMarginTop" />
+                <Text text="Actor: Asset Manager | Process: Report Lost Asset -> Investigation -> Approval" class="sapUiTinyMarginTop" />
             </VBox>
 
-            <Table id="lostAssetTable" items="{lost>/assets}" noDataText="No assigned assets available for loss reporting" class="sapUiSmallMarginTop">
-                <columns>
-                    <Column><Text text="Asset" /></Column>
-                    <Column><Text text="Current Holder" /></Column>
-                    <Column><Text text="Location" /></Column>
-                    <Column><Text text="Status" /></Column>
-                    <Column width="12rem"><Text text="Action" /></Column>
-                </columns>
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <ObjectIdentifier title="{lost>name}" text="{lost>tag}" />
-                            <Text text="{lost>user}" />
-                            <Text text="{lost>location}" />
-                            <ObjectStatus text="{lost>status}" state="{= ${lost>status} === 'Lost' ? 'Error' : 'Information' }" />
-                            <Button text="Select" type="Emphasized" press=".onSelectAssetForLost" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
-
-            <VBox class="sapUiLargeMarginTop" visible="{= !!${lost>/selectedAsset} }">
-                <Title text="Lost Asset Details" level="H3" />
-                <ObjectIdentifier title="{lost>/selectedAsset/name}" text="{lost>/selectedAsset/tag}" />
-                <Text text="Current Holder: {lost>/selectedAsset/user}" class="sapUiTinyMarginTop" />
-
-                <Label text="Investigation Notes" class="sapUiMediumMarginTop" />
-                <TextArea value="{lost>/loss/remarks}" width="30rem" rows="4" placeholder="Add investigation or closure remarks" />
-
-                <Button text="Report Lost Asset" type="Emphasized" press=".onReportLostAsset" class="sapUiSmallMarginTop" visible="{= ${lost>/selectedAsset/status} === 'Assigned' }" />
-
-                <VBox visible="{= ${lost>/selectedAsset/status} === 'Lost' }" class="sapUiLargeMarginTop">
-                    <Title text="Investigation &amp; Approval" level="H3" />
-                    <Label text="Investigation Status" class="sapUiMediumMarginTop" />
-                    <Select id="lossInvestigationStatusSelect" selectedKey="{lost>/loss/investigation}" width="20rem">
+            <Wizard id="lostWizard" finishButtonText="Record Decision" complete=".onApproveLoss">
+                <WizardStep id="stepLostAsset" title="Select Asset" validated="true">
+                    <Table id="lostAssetTable" items="{lost>/assets}" noDataText="No assigned assets available for loss reporting" class="sapUiSmallMarginTop">
+                        <columns>
+                            <Column><Text text="Asset" /></Column>
+                            <Column><Text text="Current Holder" /></Column>
+                            <Column><Text text="Location" /></Column>
+                            <Column><Text text="Status" /></Column>
+                            <Column width="12rem"><Text text="Action" /></Column>
+                        </columns>
                         <items>
-                            <core:Item key="Investigated" text="Investigated" />
-                            <core:Item key="Open" text="Open" />
-                            <core:Item key="Pending" text="Pending" />
+                            <ColumnListItem>
+                                <cells>
+                                    <ObjectIdentifier title="{lost>name}" text="{lost>tag}" />
+                                    <Text text="{lost>user}" />
+                                    <Text text="{lost>location}" />
+                                    <ObjectStatus text="{lost>status}" state="{= ${lost>status} === 'Lost' ? 'Error' : 'Information' }" />
+                                    <Button text="Select" type="Emphasized" press=".onSelectAssetForLost" />
+                                </cells>
+                            </ColumnListItem>
                         </items>
-                    </Select>
+                    </Table>
+                </WizardStep>
 
-                    <Label text="Approval Status" class="sapUiMediumMarginTop" />
-                    <Select id="lossApprovalStatusSelect" selectedKey="{lost>/loss/approval}" width="20rem">
-                        <items>
-                            <core:Item key="Approved" text="Approved" />
-                            <core:Item key="Pending" text="Pending" />
-                            <core:Item key="Rejected" text="Rejected" />
-                        </items>
-                    </Select>
+                <WizardStep id="stepReportLoss" title="Report Loss" validated="true">
+                    <form:SimpleForm layout="ResponsiveGridLayout" title="Loss Details" editable="true" columnsL="1" columnsM="1">
+                        <form:content>
+                            <Label text="Selected Asset" />
+                            <Text text="{lost>/selectedAsset/name} ({lost>/selectedAsset/tag})" />
+                            
+                            <Label text="Current Holder" />
+                            <Text text="{lost>/selectedAsset/user}" />
 
-                    <Button text="Record Investigation &amp; Approval" type="Accept" press=".onApproveLoss" class="sapUiSmallMarginTop" />
-                </VBox>
-            </VBox>
+                            <Label text="Investigation Notes" />
+                            <TextArea value="{lost>/loss/remarks}" rows="4" placeholder="Add investigation or closure remarks" width="100%" />
+                            
+                            <Label />
+                            <Button text="Report Lost Asset" type="Emphasized" press=".onReportLostAsset" visible="{= ${lost>/selectedAsset/status} === 'Assigned' }" width="200px" />
+                        </form:content>
+                    </form:SimpleForm>
+                </WizardStep>
+
+                <WizardStep id="stepInvestigation" title="Investigation &amp; Approval" validated="true">
+                    <form:SimpleForm layout="ResponsiveGridLayout" title="Approval Decision" editable="true" columnsL="1" columnsM="1">
+                        <form:content>
+                            <Label text="Investigation Status" />
+                            <Select id="lossInvestigationStatusSelect" selectedKey="{lost>/loss/investigation}" width="100%">
+                                <items>
+                                    <core:Item key="Investigated" text="Investigated" />
+                                    <core:Item key="Open" text="Open" />
+                                    <core:Item key="Pending" text="Pending" />
+                                </items>
+                            </Select>
+
+                            <Label text="Approval Status" />
+                            <Select id="lossApprovalStatusSelect" selectedKey="{lost>/loss/approval}" width="100%">
+                                <items>
+                                    <core:Item key="Approved" text="Approved" />
+                                    <core:Item key="Pending" text="Pending" />
+                                    <core:Item key="Rejected" text="Rejected" />
+                                </items>
+                            </Select>
+                        </form:content>
+                    </form:SimpleForm>
+                </WizardStep>
+            </Wizard>
         </content>
     </Page>
 </mvc:View>

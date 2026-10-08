@@ -1,42 +1,188 @@
 <mvc:View
     controllerName="itsm.fiori.controller.IncidentDetail"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page title="Incident Details" showNavButton="true" navButtonPress=".onBack" class="sapUiContentPadding">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:uxap="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form">
+    <Page title="Incident Details" showNavButton="true" navButtonPress=".onBack" showHeader="false">
         <content>
-            <ObjectHeader title="INC000001" intro="Printer Not Working" number="In Progress" numberState="Information" responsive="true">
-                <attributes>
-                    <ObjectAttribute title="User" text="Vijayan" />
-                    <ObjectAttribute title="Department" text="IT" />
-                    <ObjectAttribute title="Priority" text="High" />
-                    <ObjectAttribute title="Assigned To" text="Umair" />
-                </attributes>
-            </ObjectHeader>
-            <HBox wrap="Wrap" class="sapUiSmallMarginBottom">
-                <VBox class="itsmSection">
-                    <Title text="Timeline" level="H3" />
-                    <List>
-                        <StandardListItem title="Created" description="14 May 2026, 09:12 · Vijayan" icon="sap-icon://add-document" />
-                        <StandardListItem title="Assigned" description="14 May 2026, 09:34 · Umair" icon="sap-icon://employee-approvals" />
-                        <StandardListItem title="Work Started" description="14 May 2026, 10:05 · Umair" icon="sap-icon://begin" />
-                        <StandardListItem title="Resolved" description="Pending" icon="sap-icon://accept" />
-                        <StandardListItem title="Closed" description="Pending" icon="sap-icon://complete" />
-                    </List>
-                </VBox>
-                <VBox class="itsmSection">
-                    <Title text="Attachments" level="H3" />
-                    <Button text="Upload Files" icon="sap-icon://attachment" press=".onUpload" />
-                    <Text text="No files attached" class="sapUiSmallMarginTop" />
-                </VBox>
-            </HBox>
-            <VBox class="itsmSection">
-                <Title text="Comments" level="H3" />
-                <List>
-                    <FeedListItem sender="Vijayan" timestamp="14 May 2026, 09:12" text="The printer is showing a paper jam error, but there is no paper stuck." />
-                    <FeedListItem sender="Umair" timestamp="14 May 2026, 10:08" text="Checking the rollers and printer queue now." />
-                </List>
-                <FeedInput id="commentInput" post=".onCommentPost" placeholder="Add a comment" />
-            </VBox>
+            <uxap:ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" showEditHeaderButton="{= !${employee>/editable} }" editHeaderButtonPress=".onEdit">
+                <uxap:headerTitle>
+                    <uxap:ObjectPageDynamicHeaderTitle>
+                        <uxap:expandedHeading>
+                            <Title text="INC000001" wrapping="true"/>
+                        </uxap:expandedHeading>
+                        <uxap:snappedHeading>
+                            <Title text="INC000001" wrapping="true"/>
+                        </uxap:snappedHeading>
+                        <uxap:expandedContent>
+                            <Text text="Printer Not Working"/>
+                        </uxap:expandedContent>
+                        <uxap:snappedContent>
+                            <Text text="Printer Not Working"/>
+                        </uxap:snappedContent>
+                        <uxap:actions>
+                            <Button text="Save" type="Emphasized" press=".onSaveEmployee" visible="{employee>/editable}"/>
+                            <Button text="Cancel" press=".onCancelEmployeeEdit" visible="{employee>/editable}"/>
+                            <Button text="Resolve" type="Accept"/>
+                        </uxap:actions>
+                    </uxap:ObjectPageDynamicHeaderTitle>
+                </uxap:headerTitle>
+
+                <uxap:headerContent>
+                    <layout:VerticalLayout>
+                        <ObjectStatus title="Status" text="In Progress" state="Information"/>
+                        <ObjectStatus title="Priority" text="High" state="Error"/>
+                    </layout:VerticalLayout>
+                    <layout:VerticalLayout>
+                        <Label text="Assigned To"/>
+                        <Text text="Umair"/>
+                    </layout:VerticalLayout>
+                    <layout:VerticalLayout>
+                        <Label text="Reported By"/>
+                        <Text text="Vijayan (IT Department)"/>
+                    </layout:VerticalLayout>
+                </uxap:headerContent>
+
+                <uxap:sections>
+                    <uxap:ObjectPageSection title="General Information">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection title="Details">
+                                <uxap:blocks>
+                                    <form:SimpleForm layout="ResponsiveGridLayout" columnsL="2" columnsM="2">
+                                        <form:content>
+                                            <core:Title text="Incident Details" />
+                                            <Label text="Category" />
+                                            <Text text="Hardware" />
+                                            <Label text="Subcategory" />
+                                            <Text text="Printer" />
+                                            <Label text="Impact" />
+                                            <Text text="Medium" />
+                                            
+                                            <core:Title text="Resolution Targets" />
+                                            <Label text="Response SLA" />
+                                            <Text text="14 May 2026, 11:00 AM" />
+                                            <Label text="Resolution SLA" />
+                                            <Text text="15 May 2026, 05:00 PM" />
+                                        </form:content>
+                                    </form:SimpleForm>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <uxap:ObjectPageSection title="Employee Information">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection title="Employee Details">
+                                <uxap:blocks>
+                                    <form:SimpleForm layout="ResponsiveGridLayout" columnsL="2" columnsM="2">
+                                        <form:content>
+                                            <core:Title text="Employee Details" />
+                                            <Label text="Employee Code" />
+                                            <Text text="{employee>/EmployeeCode}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/EmployeeCode}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="First Name" />
+                                            <Text text="{employee>/FirstName}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/FirstName}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Last Name" />
+                                            <Text text="{employee>/LastName}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/LastName}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Email" />
+                                            <Text text="{employee>/Email}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/Email}" type="Email" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Phone" />
+                                            <Text text="{employee>/Phone}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/Phone}" type="Tel" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Department UUID" />
+                                            <Text text="{employee>/DepartmentUuid}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/DepartmentUuid}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Location UUID" />
+                                            <Text text="{employee>/LocationUuid}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/LocationUuid}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Manager UUID" />
+                                            <Text text="{employee>/ManagerUuid}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/ManagerUuid}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Designation" />
+                                            <Text text="{employee>/Designation}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/Designation}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Joining Date" />
+                                            <Text text="{employee>/JoiningDate}" visible="{= !${employee>/editable} }" />
+                                            <DatePicker value="{employee>/JoiningDate}" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Leaving Date" />
+                                            <Text text="{employee>/LeavingDate}" visible="{= !${employee>/editable} }" />
+                                            <DatePicker value="{employee>/LeavingDate}" valueFormat="yyyy-MM-dd" displayFormat="yyyy-MM-dd" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Status" />
+                                            <Text text="{employee>/Status}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/Status}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Source System" />
+                                            <Text text="{employee>/SourceSystem}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/SourceSystem}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="External Employee ID" />
+                                            <Text text="{employee>/ExternalEmployeeId}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/ExternalEmployeeId}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Department Name" />
+                                            <Text text="{employee>/DepartmentName}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/DepartmentName}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                            <Label text="Location Name" />
+                                            <Text text="{employee>/LocationName}" visible="{= !${employee>/editable} }" />
+                                            <Input value="{employee>/LocationName}" editable="{employee>/editable}" visible="{employee>/editable}" />
+                                        </form:content>
+                                    </form:SimpleForm>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                            <uxap:ObjectPageSubSection title="Backend Messages">
+                                <uxap:blocks>
+                                    <List items="{employee>/SAP__Messages}" noDataText="No backend messages">
+                                        <StandardListItem title="{employee>code}" description="{employee>message}" info="{employee>target}" />
+                                    </List>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <uxap:ObjectPageSection title="Timeline &amp; Activity">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection title="Activity Stream">
+                                <uxap:blocks>
+                                    <VBox>
+                                        <List>
+                                            <StandardListItem title="Created" description="14 May 2026, 09:12 AM - Vijayan" icon="sap-icon://add-document" />
+                                            <StandardListItem title="Assigned" description="14 May 2026, 09:34 AM - Umair" icon="sap-icon://employee-approvals" />
+                                            <StandardListItem title="Work Started" description="14 May 2026, 10:05 AM - Umair" icon="sap-icon://begin" />
+                                        </List>
+                                    </VBox>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                            <uxap:ObjectPageSubSection title="Comments">
+                                <uxap:blocks>
+                                    <VBox>
+                                        <FeedInput id="commentInput" post=".onCommentPost" placeholder="Add a comment" />
+                                        <List>
+                                            <FeedListItem sender="Umair" timestamp="14 May 2026, 10:08" text="Checking the rollers and printer queue now." />
+                                            <FeedListItem sender="Vijayan" timestamp="14 May 2026, 09:12" text="The printer is showing a paper jam error, but there is no paper stuck." />
+                                        </List>
+                                    </VBox>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+
+                    <uxap:ObjectPageSection title="Attachments">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection title="Files">
+                                <uxap:blocks>
+                                    <VBox>
+                                        <Button text="Upload Files" icon="sap-icon://attachment" press=".onUpload" />
+                                        <Text text="No files attached" class="sapUiSmallMarginTop" />
+                                    </VBox>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+                </uxap:sections>
+            </uxap:ObjectPageLayout>
         </content>
     </Page>
 </mvc:View>

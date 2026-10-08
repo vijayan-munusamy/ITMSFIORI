@@ -188,13 +188,50 @@
 
 .assetFormField {
     box-sizing: border-box;
-    padding: 0.25rem 0.5rem;
+    padding: 0.35rem 0.75rem;
+}
+
+.assetFormField .sapMLabel {
+    margin-bottom: 0.2rem;
+    font-size: 0.75rem;
+}
+
+.assetFormField .sapMInputBase,
+.assetFormField .sapMSlt,
+.assetFormField .sapUiFup {
+    width: 100%;
 }
 
 .assetFormSectionTitle {
     margin: 0.75rem 0 0.5rem;
     padding-bottom: 0.35rem;
     border-bottom: 1px solid var(--sapGroup_ContentBorderColor);
+}
+
+.assetWizardDialog .sapMDialogSection {
+    background-color: #f3f1e9;
+}
+
+.assetWizardLayout {
+    box-sizing: border-box;
+    padding: 0.75rem;
+}
+
+.assetWizardFormCard {
+    box-sizing: border-box;
+    margin: 0.25rem;
+    padding: 0.5rem;
+    border: 1px solid #e5e7e9;
+    border-radius: 0.75rem;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.assetWizardFooter {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.75rem 1rem 0;
+    border-top: 1px solid var(--sapGroup_ContentBorderColor);
 }
 
 .itsmDashboardPage {

@@ -1,0 +1,120 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog
+        id="employeeDialog"
+        title="{employeeDialog>/title}"
+        contentWidth="65rem"
+        contentHeight="40rem"
+        stretchOnPhone="true">
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <Toolbar>
+                    <Title text="Employee Information" />
+                </Toolbar>
+
+                <Panel headerText="Personal Information" expandable="false">
+                    <f:SimpleForm
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="1">
+                        <f:content>
+                            <Label text="Employee Code" />
+                            <Input value="{employeeDialog>/EmployeeCode}" editable="false" />
+
+                            <Label text="First Name" />
+                            <Input value="{employeeDialog>/FirstName}" />
+
+                            <Label text="Last Name" />
+                            <Input value="{employeeDialog>/LastName}" />
+
+                            <Label text="Email" />
+                            <Input value="{employeeDialog>/Email}" type="Email" />
+
+                            <Label text="Phone" />
+                            <Input value="{employeeDialog>/Phone}" />
+                        </f:content>
+                    </f:SimpleForm>
+                </Panel>
+
+                <Panel headerText="Organization Information" expandable="false">
+                    <f:SimpleForm
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="1">
+                        <f:content>
+                            <Label text="Department" />
+                            <ComboBox selectedKey="{employeeDialog>/DepartmentUuid}" items="{employeeOptions>/departments}">
+                                <core:Item key="{employeeOptions>key}" text="{employeeOptions>text}" />
+                            </ComboBox>
+
+                            <Label text="Location" />
+                            <ComboBox selectedKey="{employeeDialog>/LocationUuid}" items="{employeeOptions>/locations}">
+                                <core:Item key="{employeeOptions>key}" text="{employeeOptions>text}" />
+                            </ComboBox>
+
+                            <Label text="Manager" />
+                            <ComboBox selectedKey="{employeeDialog>/ManagerUuid}" items="{employeeOptions>/managers}">
+                                <core:Item key="{employeeOptions>key}" text="{employeeOptions>text}" />
+                            </ComboBox>
+
+                            <Label text="Designation" />
+                            <Input value="{employeeDialog>/Designation}" />
+
+                            <Label text="Status" />
+                            <Select selectedKey="{employeeDialog>/Status}">
+                                <core:Item key="Active" text="Active" />
+                                <core:Item key="Inactive" text="Inactive" />
+                                <core:Item key="On Leave" text="On Leave" />
+                            </Select>
+                        </f:content>
+                    </f:SimpleForm>
+                </Panel>
+
+                <Panel headerText="Employment Information" expandable="false">
+                    <f:SimpleForm
+                        editable="true"
+                        layout="ResponsiveGridLayout"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="1">
+                        <f:content>
+                            <Label text="Joining Date" />
+                            <DatePicker
+                                value="{employeeDialog>/JoiningDate}"
+                                valueFormat="yyyy-MM-dd"
+                                displayFormat="yyyy-MM-dd" />
+
+                            <Label text="Leaving Date" />
+                            <DatePicker
+                                value="{employeeDialog>/LeavingDate}"
+                                valueFormat="yyyy-MM-dd"
+                                displayFormat="yyyy-MM-dd" />
+
+                            <Label text="Source System" />
+                            <Input value="{employeeDialog>/SourceSystem}" />
+
+                            <Label text="External Employee ID" />
+                            <Input value="{employeeDialog>/ExternalEmployeeId}" />
+                        </f:content>
+                    </f:SimpleForm>
+                </Panel>
+            </VBox>
+        </content>
+        <beginButton>
+            <Button
+                text="Save"
+                type="Emphasized"
+                icon="sap-icon://save"
+                press=".onSaveEmployee" />
+        </beginButton>
+        <endButton>
+            <Button text="Cancel" press=".onCancelEmployee" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

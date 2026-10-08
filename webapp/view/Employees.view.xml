@@ -14,12 +14,16 @@
             </Toolbar>
             <Table id="employeeTable" items="{employees>/items}" growing="true" growingThreshold="10" noDataText="No matching employees">
                 <columns>
-                    <Column><Text text="Employee ID" /></Column>
-                    <Column><Text text="Employee Name" /></Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Department" /></Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Location" /></Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="Email" /></Column>
-                    <Column><Text text="Status" /></Column>
+                    <Column importance="High"><Text text="Employee Code" /></Column>
+                    <Column importance="High"><Text text="Employee Name" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" importance="High"><Text text="Email" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" importance="Medium"><Text text="Phone" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" importance="Medium"><Text text="Department" /></Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true" importance="Medium"><Text text="Location" /></Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true" importance="Low"><Text text="Designation" /></Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true" importance="Low"><Text text="Joining Date" /></Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true" importance="Low"><Text text="Leaving Date" /></Column>
+                    <Column importance="High"><Text text="Status" /></Column>
                     <Column width="6rem"><Text text="Actions" /></Column>
                 </columns>
                 <items>
@@ -27,9 +31,13 @@
                         <cells>
                             <Text text="{employees>id}" />
                             <Text text="{employees>name}" />
-                            <Text text="{employees>department}" />
-                            <Text text="{employees>location}" />
                             <Text text="{employees>email}" />
+                            <Text text="{employees>Phone}" />
+                            <Text text="{employees>DepartmentName}" />
+                            <Text text="{employees>LocationName}" />
+                            <Text text="{employees>Designation}" />
+                            <Text text="{employees>JoiningDate}" />
+                            <Text text="{employees>LeavingDate}" />
                             <ObjectStatus text="{employees>status}" state="{employees>state}" />
                             <HBox>
                                 <Button icon="sap-icon://edit" type="Transparent" tooltip="Edit employee" press=".onEditEmployee" />

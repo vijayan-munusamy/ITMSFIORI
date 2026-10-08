@@ -26,7 +26,7 @@
                         <tnt:NavigationListItem text="Changes" key="changes" />
                     </tnt:NavigationListItem>
                     <tnt:NavigationListItem text="Asset Management (842)" icon="sap-icon://laptop" key="assetManagement">
-                        <tnt:NavigationListItem text="Asset Register" key="assets" />
+                        <tnt:NavigationListItem text="Asset Register" icon="sap-icon://inventory" key="assets" />
                         <tnt:NavigationListItem text="Asset Assignment" key="assetAssignment" />
                         <tnt:NavigationListItem text="Asset Transfer" key="assetTransfer" />
                         <tnt:NavigationListItem text="Asset Return" key="assetReturn" />
